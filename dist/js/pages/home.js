@@ -35,8 +35,8 @@ export function home(main) {
         <h1>See electricity.<br><em>Then build with it.</em></h1>
         <p class="lede">Every circuit in this course is a live simulation. Colour shows voltage, moving dots show current, and everything reacts as you flip switches, cut wires, and occasionally set things on fire (for free). Then you take it to a real bench: building, measuring, soldering and fixing.</p>
         <div class="hero-actions">
-          <a class="btn" href="#/learn/${next.c.id}">${started ? `Continue: ${next.c.title}` : "Start with chapter 1"} →</a>
-          <a class="btn outline" href="#/learn/repair">Jump to the repair bench</a>
+          <a class="btn" href="#${next.c.id}">${started ? `Continue: ${next.c.title}` : "Start with chapter 1"} →</a>
+          <a class="btn outline" href="#repair">Jump to the repair bench</a>
         </div>
       </div>
       <div class="hero-demo"></div>
@@ -59,7 +59,7 @@ export function home(main) {
               .map(({ c, tasks, done }) => {
                 const pct = tasks ? Math.round((done / tasks) * 100) : 0;
                 const state = pct === 100 ? "done" : done > 0 ? "started" : "";
-                return `<a class="map-card ${state}" href="#/learn/${c.id}">
+                return `<a class="map-card ${state}" href="#${c.id}">
                   <span class="map-num">${pct === 100 ? "✓" : c.num}</span>
                   <span class="map-body"><strong>${c.title}</strong><small>${c.lede.split(". ")[0]}.</small>
                   <span class="map-meta"><span>${c.minutes} min</span><span class="map-bar"><i style="width:${pct}%"></i></span><span>${done}/${tasks}</span></span></span>
@@ -95,14 +95,15 @@ export function home(main) {
         </ul>
       </div>
     </section>
-    <p class="reset-row"><button type="button" class="linkish reset-progress">Reset my progress</button></p>`;
+    <p class="reset-row"><button type="button" class="linkish reset-progress">Reset my progress</button><span class="reset-confirm" hidden>Clear every tick and answer in this browser? <button type="button" class="linkish reset-yes">Yes, clear it</button> · <button type="button" class="linkish reset-no">Keep it</button></span></p>`;
 
   const fig = new Figure(main.querySelector(".hero-demo"), DEMO);
-  main.querySelector(".reset-progress").onclick = () => {
-    if (confirm("Clear all your progress in this browser?")) {
-      progress.reset();
-      dispatchEvent(new HashChangeEvent("hashchange"));
-    }
+  const ask = main.querySelector(".reset-confirm");
+  main.querySelector(".reset-progress").onclick = () => (ask.hidden = false);
+  main.querySelector(".reset-no").onclick = () => (ask.hidden = true);
+  main.querySelector(".reset-yes").onclick = () => {
+    progress.reset();
+    dispatchEvent(new HashChangeEvent("hashchange"));
   };
   return () => fig.destroy();
 }

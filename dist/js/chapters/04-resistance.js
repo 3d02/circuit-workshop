@@ -150,7 +150,7 @@ export default {
       type: "note",
       kind: "build",
       title: "Reading a real resistor's value",
-      html: `<p>Through-hole resistors are marked with coloured bands; tiny surface-mount ones with a printed code like <code>472</code> (47 × 10² = 4.7 kΩ). The <a href="#/tools">Tools page</a> decodes both. And when in doubt, measure it with a multimeter ({{ch:multimeter}}).</p>`,
+      html: `<p>Through-hole resistors are marked with coloured bands; tiny surface-mount ones with a printed code like <code>472</code> (47 × 10² = 4.7 kΩ). The <a href="#tools">Tools page</a> decodes both. And when in doubt, measure it with a multimeter ({{ch:multimeter}}).</p>`,
     },
     {
       type: "quiz",

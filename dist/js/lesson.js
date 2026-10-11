@@ -29,7 +29,7 @@ export function chapterTasks(chapter) {
 export function resolveRefs(text, chapters) {
   return text.replace(/\{\{(ch|Ch):([\w-]+)\}\}/g, (_, word, id) => {
     const target = chapters.find((c) => c.id === id);
-    return target ? `<a href="#/learn/${id}">${word === "Ch" ? "Chapter" : "chapter"} ${target.num}</a>` : id;
+    return target ? `<a href="#${id}">${word === "Ch" ? "Chapter" : "chapter"} ${target.num}</a>` : id;
   });
 }
 
@@ -104,8 +104,8 @@ export function renderChapter(chapter, main, nav) {
   updateCount();
 
   main.querySelector(".chapter-foot").innerHTML = `
-    ${nav.prev ? `<a class="foot-link prev" href="#/learn/${nav.prev.id}"><small>← Chapter ${nav.prev.num}</small>${nav.prev.title}</a>` : "<span></span>"}
-    ${nav.next ? `<a class="foot-link next" href="#/learn/${nav.next.id}"><small>Chapter ${nav.next.num} →</small>${nav.next.title}</a>` : `<a class="foot-link next" href="#/"><small>You made it →</small>Back to the course map</a>`}`;
+    ${nav.prev ? `<a class="foot-link prev" href="#${nav.prev.id}"><small>← Chapter ${nav.prev.num}</small>${nav.prev.title}</a>` : "<span></span>"}
+    ${nav.next ? `<a class="foot-link next" href="#${nav.next.id}"><small>Chapter ${nav.next.num} →</small>${nav.next.title}</a>` : `<a class="foot-link next" href="#home"><small>You made it →</small>Back to the course map</a>`}`;
 
   return () => cleanups.forEach((fn) => fn());
 }

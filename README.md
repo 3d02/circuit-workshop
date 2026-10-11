@@ -4,6 +4,8 @@ A hands-on electronics course built on a live circuit simulator. Learners see vo
 
 Run `npm start`, then open http://127.0.0.1:4173. Run the checks with `npm test`. No build step and no dependencies: everything in `dist/` is served as-is (fonts fall back to system fonts offline).
 
+The site is also published as a Claude artifact. `npm run artifact` writes `artifact/index.html`: the same page as `dist/index.html` without the document wrapper, which the artifact host supplies. Publish it with `dist/style.css` and `dist/js/**` at the same relative paths. Routes are plain words (`#loop`, `#parts`, `#part-led`, `#tools`) because an artifact link only passes a bare `#word` to the page; old `#/learn/...` links redirect. The page follows the viewer's light or dark theme.
+
 ## The course
 
 | Part | Chapters |

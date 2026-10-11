@@ -9,55 +9,64 @@ import { tools } from "./pages/tools.js";
 const main = document.getElementById("main");
 let cleanup = null;
 
-// Links from the previous version of the site keep working.
+// Routes are plain words (#loop, #parts, #part-led, #tools): a link to a published
+// artifact only passes a bare #word through to the page.
+// Links from earlier versions of the site keep working.
 const LEGACY = {
-  explore: "#/parts",
-  lab: "#/learn/resistance",
-  "lab/led": "#/learn/leds",
-  "lab/ohm": "#/learn/resistance",
-  "lab/divider": "#/learn/dividers",
-  "lab/rc": "#/learn/capacitors",
-  "lab/diode": "#/learn/leds",
-  "lab/bjt": "#/learn/transistors",
-  "lab/mosfet": "#/learn/transistors",
-  "lab/rl": "#/learn/transistors",
-  "lab/pwm": "#/learn/transistors",
-  solder: "#/learn/soldering",
-  meter: "#/learn/multimeter",
-  path: "#/",
+  explore: "#parts",
+  lab: "#resistance",
+  "lab/led": "#leds",
+  "lab/ohm": "#resistance",
+  "lab/divider": "#dividers",
+  "lab/rc": "#capacitors",
+  "lab/diode": "#leds",
+  "lab/bjt": "#transistors",
+  "lab/mosfet": "#transistors",
+  "lab/rl": "#transistors",
+  "lab/pwm": "#transistors",
+  solder: "#soldering",
+  meter: "#multimeter",
+  path: "#home",
 };
+
+function redirect(hash) {
+  if (hash.startsWith("/")) {
+    const [, section, id] = hash.split("/");
+    if (section === "learn" && id) return `#${id}`;
+    if (section === "parts") return id ? `#part-${id}` : "#parts";
+    if (section === "tools") return "#tools";
+    return "#home";
+  }
+  if (hash.startsWith("explore/")) return `#part-${hash.split("/")[1]}`;
+  return LEGACY[hash] || LEGACY[hash.split("/")[0]];
+}
 
 function route() {
   const hash = location.hash.replace(/^#/, "");
-  if (LEGACY[hash] || LEGACY[hash.split("/")[0]]) {
-    location.replace(LEGACY[hash] || LEGACY[hash.split("/")[0]]);
-    return;
-  }
-  if (hash.startsWith("explore/")) {
-    location.replace(`#/parts/${hash.split("/")[1]}`);
+  const moved = redirect(hash);
+  if (moved) {
+    location.replace(moved);
     return;
   }
   cleanup?.();
   cleanup = null;
   destroyFigures();
-  const [, section, id] = hash.split("/");
   let nav = "home";
-  let title = "Circuit Workshop — learn electronics by watching it work";
-  if (section === "learn") {
-    const i = CHAPTERS.findIndex((c) => c.id === id);
-    if (i < 0) return location.replace("#/");
+  let title = "Circuit Workshop";
+  const i = CHAPTERS.findIndex((c) => c.id === hash);
+  if (i >= 0) {
     const chapter = CHAPTERS[i];
     cleanup = renderChapter(chapter, main, { prev: CHAPTERS[i - 1], next: CHAPTERS[i + 1], chapters: CHAPTERS });
-    nav = id === "soldering" || id === "repair" ? id : "home";
-    title = `${chapter.title} — Circuit Workshop`;
-  } else if (section === "parts") {
-    cleanup = atlas(main, id);
+    nav = hash === "soldering" || hash === "repair" ? hash : "home";
+    title = `${chapter.title} · Circuit Workshop`;
+  } else if (hash === "parts" || hash.startsWith("part-")) {
+    cleanup = atlas(main, hash.slice(5));
     nav = "parts";
-    title = "Parts — Circuit Workshop";
-  } else if (section === "tools") {
+    title = "Parts · Circuit Workshop";
+  } else if (hash === "tools") {
     cleanup = tools(main);
     nav = "tools";
-    title = "Tools — Circuit Workshop";
+    title = "Tools · Circuit Workshop";
   } else {
     cleanup = home(main);
   }
@@ -79,6 +88,12 @@ function updateProgressPill() {
   document.querySelector(".progress-pill .fill").style.strokeDashoffset = String(94.25 * (1 - pct / 100));
   document.querySelector(".progress-pill").setAttribute("aria-label", `Course progress: ${pct}% of activities done`);
 }
+
+// The skip link moves focus without touching the route.
+document.querySelector(".skip").addEventListener("click", (ev) => {
+  ev.preventDefault();
+  main.focus();
+});
 
 addEventListener("hashchange", route);
 progress.on(updateProgressPill);

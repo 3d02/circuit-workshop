@@ -104,7 +104,7 @@ export function atlas(main, id) {
     cards.innerHTML =
       list
         .map(
-          (p) => `<a role="listitem" href="#/parts/${p.id}" class="atlas-card ${p.id === current ? "active" : ""}" data-id="${p.id}">${icon(p.id)}<span><strong>${p.name}</strong><small>${p.ref.replace(/\d+$/, "")} · ${p.group}</small></span></a>`,
+          (p) => `<a role="listitem" href="#part-${p.id}" class="atlas-card ${p.id === current ? "active" : ""}" data-id="${p.id}">${icon(p.id)}<span><strong>${p.name}</strong><small>${p.ref.replace(/\d+$/, "")} · ${p.group}</small></span></a>`,
         )
         .join("") || `<p class="empty">No matching parts.</p>`;
   };
@@ -131,7 +131,7 @@ export function atlas(main, id) {
             ? `${p.types.map(([n, d]) => `<h4>${n}</h4><p>${d}</p>`).join("")}<h4>How to recognise it</h4><p>${p.identify}</p>`
             : `<h4>Measuring and testing</h4><p>${p.test}</p><h4>At the soldering iron</h4><p>${p.solder}</p><h4>Keep in mind</h4><p>${p.care}</p>`
       }</div>
-      ${chapter ? `<a class="btn small" href="#/learn/${chapter}">See it working in the course →</a>` : ""}`;
+      ${chapter ? `<a class="btn small" href="#${chapter}">See it working in the course →</a>` : ""}`;
     detail.querySelectorAll("[data-tab]").forEach((b) => {
       b.onclick = () => {
         tab = b.dataset.tab;
@@ -154,7 +154,7 @@ export function atlas(main, id) {
     e.preventDefault();
     current = a.dataset.id;
     tab = "overview";
-    history.replaceState(null, "", `#/parts/${current}`);
+    history.replaceState(null, "", `#part-${current}`);
     renderCards();
     renderDetail();
     if (matchMedia("(max-width: 900px)").matches) detail.scrollIntoView({ behavior: "smooth", block: "start" });
