@@ -1,0 +1,10 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {ohm,led,divider,rc,rl,regulator,amplifier} from '../dist/physics.mjs';
+const close=(a,b)=>assert.ok(Math.abs(a-b)<1e-9,`${a} != ${b}`);
+test('Ohm current and quadratic power scaling',()=>{close(ohm(5,1000).i,.005);close(ohm(10,1000).p,ohm(5,1000).p*4)});
+test('LED below forward threshold and reverse blocking',()=>{close(led(1,330,2).i,0);close(led(5,330,2,true).i,0);close(led(5,330,2).i,3/330)});
+test('Loaded divider uses the parallel resistance',()=>{close(divider(5,10000,10000).out,2.5);close(divider(5,10000,10000,10000).out,5/3)});
+test('RC initial, one time constant, and discharge',()=>{close(rc(5,10000,.0001,0).vc,0);close(rc(5,10000,.0001,1).vc,5*(1-Math.exp(-1)));close(rc(5,10000,.0001,0,true).vc,5);assert.ok(rc(5,10000,.0001,1,true).i<0)});
+test('RL starts with zero current and rises toward V/R',()=>{close(rl(5,100,.1,0).i,0);close(rl(5,100,.1,.001).i,.05*(1-Math.exp(-1)))});
+test('Regulator headroom, loss, and op-amp clipping',()=>{close(regulator(5,3.3,.1).p,.17);assert.equal(regulator(3.5,3.3,.1).inRegulation,false);close(regulator(3.5,3.3,.1).out,3.1);assert.equal(amplifier(1,50,10).clipped,true);close(amplifier(1,50,10).out,5)});

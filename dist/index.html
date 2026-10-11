@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#183e36">
+  <meta name="description" content="Learn electronics by changing real circuit variables. Explore PCB components, soldering, measurement, and your first builds in an interactive workbench.">
+  <title>Circuit Workshop — Learn by making connections</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23183e36'/%3E%3Cpath d='M8 12h12v16h12M8 28h7V12h17' fill='none' stroke='%23d6ed99' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to workbench</a>
+  <header class="topbar">
+    <a href="#explore" class="brand" aria-label="Circuit Workshop home"><span class="brand-icon">⎓</span><span>Circuit<span class="brand-light">workshop</span></span></a>
+    <nav aria-label="Main navigation">
+      <a href="#explore" data-nav="explore">Component atlas</a>
+      <a href="#lab" data-nav="lab">Circuit lab</a>
+      <a href="#solder" data-nav="solder">Soldering</a>
+      <a href="#meter" data-nav="meter">Multimeter</a>
+      <a href="#path" data-nav="path">Your learning path</a>
+    </nav>
+    <span class="header-note"><i></i> A little curiosity goes a long way</span>
+  </header>
+  <main id="main" tabindex="-1"></main>
+  <footer><span>CIRCUIT WORKSHOP <span class="footer-sep">/</span> A hands-on guide to the little things that make things work.</span><a href="#path">Resources & next steps ↗</a></footer>
+  <div id="toast" role="status"></div>
+</body>
+</html>
