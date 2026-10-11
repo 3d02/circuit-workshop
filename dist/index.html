@@ -4,27 +4,37 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#183e36">
-  <meta name="description" content="Learn electronics by changing real circuit variables. Explore PCB components, soldering, measurement, and your first builds in an interactive workbench.">
-  <title>Circuit Workshop — Learn by making connections</title>
+  <meta name="description" content="A hands-on electronics course built on a live circuit simulator. See voltage and current, predict what happens, break things safely, then build and repair for real.">
+  <title>Circuit Workshop — learn electronics by watching it work</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23183e36'/%3E%3Cpath d='M8 12h12v16h12M8 28h7V12h17' fill='none' stroke='%23d6ed99' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="./style.css">
-  <script type="module" src="./app.js"></script>
+  <script type="module" src="./js/app.js"></script>
 </head>
 <body>
-  <a class="skip" href="#main">Skip to workbench</a>
+  <a class="skip" href="#main">Skip to content</a>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <radialGradient id="lampglow"><stop offset="0" stop-color="#fff3c4" stop-opacity=".95"/><stop offset=".45" stop-color="#ffc94d" stop-opacity=".55"/><stop offset="1" stop-color="#ffb02e" stop-opacity="0"/></radialGradient>
+    </defs>
+  </svg>
   <header class="topbar">
-    <a href="#explore" class="brand" aria-label="Circuit Workshop home"><span class="brand-icon">⎓</span><span>Circuit<span class="brand-light">workshop</span></span></a>
-    <nav aria-label="Main navigation">
-      <a href="#explore" data-nav="explore">Component atlas</a>
-      <a href="#lab" data-nav="lab">Circuit lab</a>
-      <a href="#solder" data-nav="solder">Soldering</a>
-      <a href="#meter" data-nav="meter">Multimeter</a>
-      <a href="#path" data-nav="path">Your learning path</a>
+    <a href="#/" class="brand" aria-label="Circuit Workshop: course home"><span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M8 12h12v16h12M8 28h7V12h17" fill="none" stroke="currentColor" stroke-width="3"/></svg></span><span>Circuit<span class="brand-light">workshop</span></span></a>
+    <nav aria-label="Main">
+      <a href="#/" data-nav="home">Course</a>
+      <a href="#/learn/soldering" data-nav="soldering">Soldering</a>
+      <a href="#/learn/repair" data-nav="repair">Fault finding</a>
+      <a href="#/parts" data-nav="parts">Parts</a>
+      <a href="#/tools" data-nav="tools">Tools</a>
     </nav>
-    <span class="header-note"><i></i> A little curiosity goes a long way</span>
+    <a class="progress-pill" href="#/" aria-label="Your progress"><span class="ring"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15"/><circle class="fill" cx="18" cy="18" r="15"/></svg></span><span class="progress-text">0%</span></a>
   </header>
   <main id="main" tabindex="-1"></main>
-  <footer><span>CIRCUIT WORKSHOP <span class="footer-sep">/</span> A hands-on guide to the little things that make things work.</span><a href="#path">Resources & next steps ↗</a></footer>
-  <div id="toast" role="status"></div>
+  <footer class="site-foot">
+    <span>Circuit Workshop · Simulations are idealised teaching models: real parts vary, so trust the datasheet.</span>
+    <span>Progress is saved in this browser only.</span>
+  </footer>
 </body>
 </html>
