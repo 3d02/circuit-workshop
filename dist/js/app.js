@@ -5,11 +5,12 @@ import { progress } from "./progress.js";
 import { home } from "./pages/home.js";
 import { atlas } from "./pages/atlas.js";
 import { tools } from "./pages/tools.js";
+import { bm235 } from "./pages/bm235.js";
 
 const main = document.getElementById("main");
 let cleanup = null;
 
-// Routes are plain words (#loop, #parts, #part-led, #tools): a link to a published
+// Routes are plain words (#loop, #parts, #part-led, #tools, #bm235): a link to a published
 // artifact only passes a bare #word through to the page.
 // Links from earlier versions of the site keep working.
 const LEGACY = {
@@ -67,6 +68,10 @@ function route() {
     cleanup = tools(main);
     nav = "tools";
     title = "Tools · Circuit Workshop";
+  } else if (hash === "bm235") {
+    cleanup = bm235(main);
+    nav = "tools";
+    title = "Brymen BM235 · Circuit Workshop";
   } else {
     cleanup = home(main);
   }

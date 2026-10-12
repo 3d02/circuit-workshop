@@ -98,6 +98,12 @@ export default {
       </ul>`,
     },
     {
+      type: "note",
+      kind: "build",
+      title: "Your own meter",
+      html: `<p>Got a Brymen BM235? The <a href="#bm235">BM235 field guide</a> covers every dial position and button on the real thing, how each one works inside, and useful checks around the house.</p>`,
+    },
+    {
       type: "quiz",
       id: "meter-quiz",
       questions: [

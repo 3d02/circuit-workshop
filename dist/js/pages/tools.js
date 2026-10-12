@@ -39,6 +39,11 @@ export function tools(main) {
       <p class="lede">Calculators and decoders for the questions that come up at every build. Markings are clues; the datasheet is the authority.</p>
     </div>
     <div class="tool-grid">
+      <a class="tool-card wide-card bm-promo" href="#bm235">
+        <div class="eyebrow">Your meter</div>
+        <h3>Brymen BM235 field guide →</h3>
+        <p>Every dial position and button, how it works inside, the must-knows, and useful checks around the house.</p>
+      </a>
       <section class="tool-card wide-card">
         <div class="eyebrow">Colour code</div>
         <h3>Read a resistor's bands</h3>

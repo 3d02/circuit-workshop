@@ -4,7 +4,7 @@ A hands-on electronics course built on a live circuit simulator. Learners see vo
 
 Run `npm start`, then open http://127.0.0.1:4173. Run the checks with `npm test`. No build step and no dependencies: everything in `dist/` is served as-is (fonts fall back to system fonts offline).
 
-The site is also published as a Claude artifact. `npm run artifact` writes `artifact/index.html`: the same page as `dist/index.html` without the document wrapper, which the artifact host supplies. Publish it with `dist/style.css` and `dist/js/**` at the same relative paths. Routes are plain words (`#loop`, `#parts`, `#part-led`, `#tools`) because an artifact link only passes a bare `#word` to the page; old `#/learn/...` links redirect. The page follows the viewer's light or dark theme.
+The site is also published as a Claude artifact. `npm run artifact` writes `artifact/index.html`: the same page as `dist/index.html` without the document wrapper, which the artifact host supplies. Publish it with `dist/style.css` and `dist/js/**` at the same relative paths. Routes are plain words (`#loop`, `#parts`, `#part-led`, `#tools`, `#bm235`) because an artifact link only passes a bare `#word` to the page; old `#/learn/...` links redirect. The page follows the viewer's light or dark theme.
 
 ## The course
 
@@ -20,7 +20,7 @@ Each chapter mixes short prose with live figures and three kinds of activity, al
 - **Challenges**: goals the simulation checks for itself ("make exactly 10 mA flow", "measure the resistor with the power off").
 - **Quizzes**: a short check at the end of each chapter.
 
-There are also reference pages: **Parts** (17 component families) and **Tools** (colour code, SMD codes, LED resistor and Ohm's-law calculators, glossary).
+There are also reference pages: **Parts** (17 component families), **Tools** (colour code, SMD codes, LED resistor and Ohm's-law calculators, glossary), and a field guide to the **Brymen BM235** multimeter: every dial position and button on an interactive front panel, how it works inside (with accuracy, ghost-voltage and burden-voltage calculators), the must-knows, and checks around the house. Its figures come from Brymen's manual and the EEVblog edition, both linked on the page.
 
 ## How it works
 
@@ -47,7 +47,8 @@ dist/js/
   repair.js      Repair bench: circuits with hidden faults, scored on measurements.
   chapters/      One data module per chapter. Cross-references are written {{ch:voltage}} and
                  render as a link with the current chapter number.
-  pages/         Home, Parts, Tools.
+  pages/         Home, Parts, Tools, and the BM235 field guide (its data and calculators are in
+                 data/bm235.js, DOM-free and tested).
 ```
 
 A figure is plain data. Grid coordinates are in units of 40 px; two-terminal parts have pins `a` and `b`:
@@ -67,7 +68,7 @@ A figure is plain data. Grid coordinates are in units of 40 px; two-terminal par
 }
 ```
 
-`npm test` runs physics checks on the engine (LED forward voltages, RC/RL time constants, transistor saturation, floating MOSFET gates, inductive kick) and on the inside-the-wire model (no drift without a field, drift proportional to field, heat proportional to field squared, less drift when hot), and simulates every figure in every chapter, checking convergence, unique task ids, valid answers, and that each repair job is broken before its fix and working after.
+`npm test` runs physics checks on the engine (LED forward voltages, RC/RL time constants, transistor saturation, floating MOSFET gates, inductive kick) and on the inside-the-wire model (no drift without a field, drift proportional to field, heat proportional to field squared, less drift when hot), and simulates every figure in every chapter, checking convergence, unique task ids, valid answers, and that each repair job is broken before its fix and working after. It also checks the BM235 calculators against the manuals' figures.
 
 ## Accuracy
 
