@@ -25,6 +25,10 @@ test("typed answers: units, prefixes, commas and resistor codes", () => {
   ok("6.25e12", 6.25e12, "electrons");
   ok("1,200", 1200, "mAh");
   ok("300 Wh", 0.3, "kWh");
+  ok("16 hours", 16, "h");
+  ok("68 minutes", 68, "min");
+  ok("±0.071 V", 0.071, "V");
+  ok("19.1 uA", 0.0191, "mA");
   assert.equal(check("19.1 uA", { answer: 19.1, unit: "mA" }).why, "prefix");
   assert.equal(check("9 V", { answer: 19.1, unit: "mA" }).why, "unit");
   assert.equal(check("-19.1", { answer: 19.1, unit: "mA" }).why, "sign");
@@ -98,4 +102,21 @@ test("battery model: alkaline loses capacity at high current, NiMH holds its vol
   assert.ok(nimhMid > 1.18 && nimhMid < 1.3, `NiMH mid-discharge ${nimhMid}`);
   const liion = discharge("liion", 0.5);
   assert.ok(liion.wh > 9 && liion.wh < 12, `an 18650 delivers about 10–11 Wh, got ${liion.wh}`);
+});
+
+test("every worked solution states, in bold, the same answer the problem checks for", () => {
+  const sup = { "⁰": "0", "¹": "1", "²": "2", "³": "3", "⁴": "4", "⁵": "5", "⁶": "6", "⁷": "7", "⁸": "8", "⁹": "9", "⁻": "-" };
+  for (const [c, b] of blocks("problems")) {
+    for (const p of b.items) {
+      const bold = [...p.solution.matchAll(/<b>([^<]*)<\/b>/g)].map((m) => m[1]).find((t) => /\d/.test(t));
+      assert.ok(bold, `${c.id} › ${p.id}: the solution should give its answer in bold`);
+      const text = bold
+        .replace(/,(?=\d{3})/g, "")
+        .replace(/about |≈ ?/g, "")
+        .replace(/ × 10([⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+)/, (_, e) => `e${[...e].map((ch) => sup[ch]).join("")}`)
+        .match(/^[±+−-]?[\d.]+(e-?\d+)?\s*\S*/)[0];
+      const v = toDisplayUnit(text, p.unit).value;
+      assert.ok(v !== undefined && Math.abs(v - p.answer) <= Math.max(p.abs || 0, 0.035 * Math.abs(p.answer)), `${c.id} › ${p.id}: solution says ${bold}, answer is ${p.answer} ${p.unit}`);
+    }
+  }
 });

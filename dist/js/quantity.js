@@ -33,7 +33,7 @@ function normUnit(text) {
   return String(text)
     .trim()
     .replace(/\s+/g, "")
-    .replace(/[uμ](?=[A-Za-zΩ])/g, "µ")
+    .replace(/^[uμ](?=[A-Za-zΩ])/, "µ")
     .replace(/^u$/, "µ")
     .replace(/ohms?$/i, "Ω")
     .replace(/^K(?=[A-Za-zΩ]|$)/, "k")
@@ -46,7 +46,7 @@ function normUnit(text) {
 
 // Read a number in the learner's own notation. Returns null if it isn't one.
 export function readNumber(raw) {
-  let s = String(raw).trim().replace(/−/g, "-").replace(/\s+/g, " ");
+  let s = String(raw).trim().replace(/−/g, "-").replace(/^±\s*/, "").replace(/\s+/g, " ");
   // Decimal comma ("0,5") unless the comma is a thousands separator ("1,200").
   if (/,/.test(s) && !/\./.test(s) && !/^\d{1,3}(,\d{3})+(\D|$)/.test(s)) s = s.replace(",", ".");
   s = s.replace(/,/g, "");

@@ -27,6 +27,20 @@ export default {
       title: "Half-splitting",
       html: `<p>In a long chain (a cable, a string of parts), don't start at one end. Measure in the middle: is the signal or voltage right there? If yes, the fault is in the second half; if not, the first. Each measurement halves the search.</p>`,
     },
+    {
+      type: "bench",
+      id: "bench-dropwalk",
+      title: "The voltage-drop walk",
+      intro: "Step 4 of the method, on a real circuit. It finds bad contacts that continuity mode misses, because it tests them while they carry current.",
+      setup: { dial: "V, with ⎓ showing (or mV for small drops)", leads: "black in COM, red in V Ω", need: "the LED circuit from {{ch:multimeter}}, built on the breadboard, and one jumper wire you can loosen" },
+      steps: [
+        "Power the circuit. Measure across each part in turn: the battery, the battery clip's two contacts, each jumper wire (one probe on each end), the resistor, the LED.",
+        "Write them down. Wires and contacts should read a few millivolts at most; the resistor and LED take almost all of the supply.",
+        "Now half-pull one jumper wire out of its hole so it just touches. Measure across it again: a bad contact shows up as a voltage across something that should have none.",
+        "Push it back in and confirm the drop disappears.",
+      ],
+      expect: `<p>This is Kirchhoff's voltage law turned into a fault-finding tool. Every millivolt of the supply is accounted for somewhere round the loop. A connection that's going bad takes its share as I × R, and heats up doing it, long before it fails completely. Electricians use exactly this on car wiring and on mains connections: the warm, high-resistance joint is what starts fires.</p>`,
+    },
     { type: "h2", text: "The repair bench" },
     `<p>Each job below has exactly one fault. The circuit is drawn as it <em>should</em> be, like a schematic in a service manual; the board in front of you is what's actually built. Unlike the rest of this course, you can't see voltages here, just like a real board. Use the meter. When you're confident, use <b>Replace a part…</b> and click the culprit.</p>
      <p>You'll be scored on measurements and wrong replacements. Wrong parts cost money in real life too.</p>`,

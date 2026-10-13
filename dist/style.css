@@ -5312,3 +5312,148 @@ kbd {
 .ds .bm-table-wrap {
   margin-bottom: 0;
 }
+
+/* ---------- home: final project ---------- */
+.home-project {
+  max-width: 1240px;
+  margin: 46px auto 0;
+  padding: 26px clamp(18px, 3vw, 32px);
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 20px 32px;
+  align-items: center;
+  border-radius: var(--radius);
+  background: var(--deep);
+  color: var(--stage-ink);
+}
+.home-project .eyebrow {
+  color: var(--lime);
+}
+.home-project h2 {
+  font-size: clamp(26px, 3.2vw, 34px);
+  margin: 8px 0 10px;
+}
+.home-project p {
+  color: #cfdccb;
+  margin: 0 0 16px;
+  max-width: 60ch;
+}
+.home-project .btn {
+  background: var(--lime);
+  color: var(--on-lime);
+  border-color: var(--lime);
+}
+.home-project-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.home-project-steps li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgb(255 255 255 / 0.06);
+  font-size: 14.5px;
+}
+.home-project-steps b {
+  flex: 0 0 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--lime);
+  color: var(--on-lime);
+  font: 600 12px var(--mono);
+}
+@media (max-width: 760px) {
+  .home-project {
+    grid-template-columns: 1fr;
+    margin-inline: 16px;
+  }
+}
+
+/* ---------- final project: perfboard ---------- */
+.pb-wrap {
+  margin: 0;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+.perfboard {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.pb-board {
+  fill: #c9b27a;
+  stroke: #a8925c;
+}
+.pb-hole {
+  fill: #6e5d34;
+}
+.pb-pad {
+  fill: #d8dcd6;
+  stroke: #8a8f86;
+  stroke-width: 1.5;
+}
+.pb-trace {
+  fill: none;
+  stroke: #c98a4a;
+  stroke-width: 9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.75;
+}
+.pb-lead {
+  stroke: #9aa39a;
+  stroke-width: 3;
+}
+.pb-res {
+  fill: #e3cf9c;
+  stroke: #a8925c;
+}
+.pb-to220 {
+  fill: #1b1f1d;
+}
+.pb-tab {
+  fill: #c9ced2;
+}
+.pb-to92 {
+  fill: #1b1f1d;
+}
+.pb-pin {
+  font: 600 12px var(--mono);
+  fill: #2b2a22;
+}
+.pb-part,
+.pb-label {
+  font: 600 13px var(--mono);
+  fill: #2b2a22;
+}
+.pb-label.out {
+  fill: var(--ink);
+}
+.pb-rail {
+  font: 600 14px var(--mono);
+  fill: var(--ink);
+}
+.pb-wire {
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+.pb-wire.red {
+  stroke: #c2402c;
+}
+.pb-wire.black {
+  stroke: #1f2a25;
+}
+.bom-title {
+  font-size: 21px;
+  margin: 0 0 10px;
+}

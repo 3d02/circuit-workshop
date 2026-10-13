@@ -61,7 +61,7 @@ function route() {
   if (i >= 0) {
     const chapter = CHAPTERS[i];
     cleanup = renderChapter(chapter, main, { prev: CHAPTERS[i - 1], next: CHAPTERS[i + 1], chapters: CHAPTERS });
-    nav = "home";
+    nav = hash === "flashlight" ? "project" : "home";
     title = `${chapter.title} · Circuit Workshop`;
   } else if (hash === "parts" || hash.startsWith("part-")) {
     cleanup = atlas(main, hash.slice(5));
