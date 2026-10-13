@@ -636,10 +636,11 @@ export const COMPONENTS = {
   npn: {
     defaults: { bf: 100 },
     // `at` is the base pin; collector is up-right, emitter down-right.
+    // With `mirror: true` it faces the other way: base on the right, collector up-left.
     pins: (p) => [
-      [p.at[0] + 1, p.at[1] - 1],
+      [p.at[0] + (p.mirror ? -1 : 1), p.at[1] - 1],
       p.at,
-      [p.at[0] + 1, p.at[1] + 1],
+      [p.at[0] + (p.mirror ? -1 : 1), p.at[1] + 1],
     ],
     build(p, [c, b, e], sim) {
       p.els = [sim.add(new NPN(c, b, e, { bf: p.bf }))];
@@ -657,8 +658,10 @@ export const COMPONENTS = {
     draw(p, G) {
       const x = p.at[0] * G;
       const y = p.at[1] * G;
-      const X = (dx) => f(x + (dx * G) / 40);
+      const m = p.mirror ? -1 : 1;
+      const X = (dx) => f(x + (m * dx * G) / 40);
       const Y = (dy) => f(y + (dy * G) / 40);
+      const end = p.mirror ? ' text-anchor="end"' : "";
       return (
         `<circle class="mask" cx="${X(26)}" cy="${Y(0)}" r="${f((21 * G) / 40)}"/><circle class="case" cx="${X(26)}" cy="${Y(0)}" r="${f((21 * G) / 40)}"/>` +
         `<line class="lead" data-ref="lb" x1="${X(0)}" y1="${Y(0)}" x2="${X(16)}" y2="${Y(0)}"/>` +
@@ -669,8 +672,8 @@ export const COMPONENTS = {
         dots(`M${X(40)} ${Y(-40)}L${X(40)} ${Y(-20)}L${X(16)} ${Y(-6)}L${X(16)} ${Y(0)}`, 0) +
         dots(`M${X(0)} ${Y(0)}L${X(16)} ${Y(0)}`, 1) +
         dots(`M${X(16)} ${Y(0)}L${X(16)} ${Y(6)}L${X(40)} ${Y(20)}L${X(40)} ${Y(40)}`, 2) +
-        `<text class="pin-lbl" x="${X(46)}" y="${Y(-26)}">C</text><text class="pin-lbl" x="${X(2)}" y="${Y(-9)}">B</text><text class="pin-lbl" x="${X(46)}" y="${Y(32)}">E</text>` +
-        (p.label === false ? "" : `<text class="lbl" x="${X(52)}" y="${Y(4)}">${labelText(p, "NPN")}</text>`)
+        `<text class="pin-lbl" x="${X(46)}" y="${Y(-26)}"${end}>C</text><text class="pin-lbl" x="${X(2)}" y="${Y(-9)}"${end}>B</text><text class="pin-lbl" x="${X(46)}" y="${Y(32)}"${end}>E</text>` +
+        (p.label === false ? "" : `<text class="lbl" x="${X(52)}" y="${Y(4)}"${end}>${labelText(p, "NPN")}</text>`)
       );
     },
     update(p, r, ctx) {
@@ -678,7 +681,7 @@ export const COMPONENTS = {
       attr(r.lb, "stroke", ctx.color(ctx.v[p.nodes[1]]));
       attr(r.le, "stroke", ctx.color(ctx.v[p.nodes[2]]));
     },
-    hit: (p, G) => ({ x: (p.at[0] + 0.6) * G, y: p.at[1] * G, r: G * 0.6 }),
+    hit: (p, G) => ({ x: (p.at[0] + (p.mirror ? -0.6 : 0.6)) * G, y: p.at[1] * G, r: G * 0.6 }),
     info(p, q) {
       const { ic, ib } = p.els[0];
       const vce = q.across(p.id);

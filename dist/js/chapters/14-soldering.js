@@ -10,6 +10,8 @@ export default {
     "Make a through-hole joint in the right order: heat, solder, solder away, iron away",
     "Recognise good and bad joints by eye",
     "Know how to undo a joint",
+    "Work out how much heat a joint needs, and why big copper is slow",
+    "Check joints with your meter",
   ],
   blocks: [
     { type: "h2", text: "What's actually happening" },
@@ -19,6 +21,27 @@ export default {
        <li><strong>Both surfaces must be clean.</strong> Copper oxidises in air. <em>Flux</em> (inside the core of electronics solder) strips that oxide off as it heats, but it burns away after a few seconds.</li>
      </ul>
      <p>So the iron's job is to heat the <em>joint</em>, the pad and the lead together, and the solder goes onto the joint, not onto the iron. That's the single most important idea in soldering.</p>`,
+    { type: "h2", text: "The physics: heat in, heat out" },
+    `<p>Two kinds of solder are common. Traditional tin-lead solder (Sn63Pb37) melts at exactly 183 °C. Lead-free solder (usually SAC305: tin with 3% silver and 0.5% copper) melts at about 217–220 °C, flows a little less readily, and is what new products use. Either way, the iron's job is to deliver enough heat, fast enough, to get the pad and the lead above that temperature while the flux is still working.</p>`,
+    {
+      type: "formula",
+      id: "heat",
+      name: "Heat to warm something up",
+      eq: "Q = m × c × ΔT",
+      alt: ["time ≈ Q ÷ P"],
+      vars: [
+        ["Q", "heat energy needed", "joules, J"],
+        ["m", "mass being heated", "kilograms, kg"],
+        ["c", "specific heat capacity: copper 385, tin solder about 200, FR4 board about 1,100", "J/(kg·°C)"],
+        ["ΔT", "temperature rise", "°C"],
+        ["P", "the power actually flowing from the tip into the joint", "watts, W"],
+      ],
+      why: `<p>Every kilogram of a material takes a fixed amount of energy per degree to warm up: its specific heat capacity. Twice the mass, or twice the rise, takes twice the energy.</p>`,
+      use: `<p>Why a pad on a big copper area (a ground plane) won't come up to temperature: the plane is a large mass, and copper also conducts the heat away fast. A bigger tip delivers more power through a larger contact area; leaning on a small one for longer mostly cooks the flux and the board.</p>`,
+      example: `<p>A pad and lead, about 0.05 g of copper, from 20 °C to 240 °C:</p>
+                <span class="calc">Q = 0.00005 × 385 × 220 = 4.2 J</span>
+                <p>With about 10 W flowing from the tip into it, that's under half a second. A ground-plane pad might be 2 g: 170 J, or 17 seconds, while it also loses heat to the rest of the plane.</p>`,
+    },
     { type: "h2", text: "Try it: the soldering simulator" },
     `<p>Below is a cross-section: a component's lead poking up through a hole in a circuit board, with a copper <em>pad</em> around it. The thermometers show how hot the pad and the lead are. Solder melts at 217 °C (the dashed line).</p>
      <p><strong>How to use it:</strong> click <b>Put the iron on the joint</b>, watch both temperatures climb past the line, then <b>hold</b> “feed solder” for a second or two. Release the solder, then lift the iron. Or use the keyboard: <kbd>I</kbd> for the iron, hold <kbd>S</kbd> for solder. Then try doing it badly on purpose: solder too early, too much, or leave the iron on too long.</p>`,
@@ -66,6 +89,46 @@ export default {
       kind: "build",
       title: "Your first practice session",
       html: `<p>Get a cheap through-hole practice board and a strip of resistors. Solder ten resistors, inspect every joint with a magnifier, then desolder five of them and do them again. Twenty joints in, you'll be surprised how natural it feels. Move to small surface-mount parts (size 1206, then 0805) once through-hole is easy.</p>`,
+    },
+    {
+      type: "bench",
+      id: "bench-joints",
+      title: "Check your practice joints with the meter",
+      intro: "A joint can look acceptable and still not connect. After a practice session, buzz your work out before you trust it.",
+      setup: { dial: "Ω, then SELECT for •)))", leads: "black in COM, red in V Ω", need: "your practice board with soldered resistors" },
+      steps: [
+        "On continuity, touch the probes to the same copper track either side of each joint you made: every one should beep.",
+        "Check that neighbouring pads that shouldn't connect <em>don't</em> beep. A beep there means a solder bridge.",
+        "On Ω, measure each soldered resistor through its two joints, probing the copper pads rather than the leads. It should read its marked value: a cracked joint reads high, or OL, or wanders when you press on the part.",
+        "Flex the board gently while watching the reading: a cold joint often shows itself by flickering.",
+      ],
+      expect: `<p>A good joint is a few thousandths of an ohm: far below what your meter can resolve, so it simply disappears from the reading. A bad one shows up as OL, as extra resistance, or as a reading that changes when you flex the board. This is exactly how you'll check the flashlight before its first power-up.</p>`,
+    },
+    {
+      type: "problems",
+      id: "solder-p",
+      title: "Heat, on paper",
+      items: [
+        { id: "solder-p1", level: 1, q: "<p>How much heat raises 0.1 g of copper (c = 385 J/(kg·°C)) from 20 °C to 250 °C?</p>", unit: "J", answer: 0.0001 * 385 * 230, hints: ["Q = m × c × ΔT, with m in kg: 0.0001."], solution: "<p>Q = 0.0001 × 385 × 230 = <b>8.9 J</b>.</p>" },
+        {
+          id: "solder-p2",
+          level: 2,
+          q: "<p>If 12 W flows from the iron into that joint, about how long does it take to heat, ignoring losses?</p>",
+          unit: "s",
+          answer: (0.0001 * 385 * 230) / 12,
+          hints: ["time = energy ÷ power."],
+          solution: "<p>t = 8.9 ÷ 12 = <b>0.74 s</b>. In practice longer, because heat leaks away into the board and the lead while it warms.</p>",
+        },
+        {
+          id: "solder-p3",
+          level: 3,
+          q: "<p>A temperature-controlled iron's heater is rated 60 W at 24 V. What is its resistance?</p>",
+          unit: "Ω",
+          answer: (24 * 24) / 60,
+          hints: ["P = V² ÷ R, rearranged."],
+          solution: "<p>R = 24² ÷ 60 = <b>9.6 Ω</b>. The station switches it on and off rapidly to hold the set temperature: the duty cycle you'll meet with PWM.</p>",
+        },
+      ],
     },
     {
       type: "quiz",

@@ -35,8 +35,8 @@ export function home(main) {
         <h1>See electricity.<br><em>Then build with it.</em></h1>
         <p class="lede">Every circuit in this course is a live simulation. Colour shows voltage, moving dots show current, and everything reacts as you flip switches, cut wires, and occasionally set things on fire (for free). Then you take it to a real bench: building, measuring, soldering and fixing.</p>
         <div class="hero-actions">
-          <a class="btn" href="#${next.c.id}">${started ? `Continue: ${next.c.title}` : "Start with chapter 1"} →</a>
-          <a class="btn outline" href="#repair">Jump to the repair bench</a>
+          <a class="btn" href="#${next.c.id}">${started ? `Continue: ${next.c.title}` : "Start with the maths toolkit"} →</a>
+          <a class="btn outline" href="#flashlight">See the final project</a>
         </div>
       </div>
       <div class="hero-demo"></div>
@@ -44,8 +44,8 @@ export function home(main) {
 
     <section class="home-pillars">
       <div><span class="pillar-icon">?</span><h3>Predict, then see</h3><p>Before most experiments you commit to a prediction. Then the circuit shows you what really happens, and why.</p></div>
-      <div><span class="pillar-icon">⚡</span><h3>Real physics underneath</h3><p>A circuit simulator solves every figure live: LEDs have real curves, capacitors charge, coils kick back.</p></div>
-      <div><span class="pillar-icon">✓</span><h3>Challenges that check themselves</h3><p>Hit a target current, pick the right resistor, find the fault. The course notices when you've done it.</p></div>
+      <div><span class="pillar-icon">⚡</span><h3>Real physics, written down</h3><p>A simulator solves every figure live, some of them in 3D. Every formula comes with where it's from, a worked example, and problems to do with a pencil.</p></div>
+      <div><span class="pillar-icon">✓</span><h3>Checked on screen and at your bench</h3><p>Hit a target current, type your worked answer, find the fault. Then do it for real with your own meter: every chapter has an exercise for it.</p></div>
     </section>
 
     <section class="course-map" aria-label="Course chapters">
@@ -71,12 +71,24 @@ export function home(main) {
       ).join("")}
     </section>
 
+    <section class="home-project">
+      <div class="home-project-text">
+        <div class="eyebrow">Final project</div>
+        <h2>A flashlight you design and build</h2>
+        <p>A 1 W LED held at a steady 310 mA from four rechargeable AAs, by a two-transistor regulator you size yourself. Specify it, calculate every part, simulate it, breadboard it with your meter, solder it, test it, and publish it as open hardware.</p>
+        <a class="btn" href="#flashlight">See the project →</a>
+      </div>
+      <ul class="home-project-steps">
+        <li><b>1</b>Brief and battery</li><li><b>2</b>Size every part</li><li><b>3</b>Simulate</li><li><b>4</b>Breadboard and measure</li><li><b>5</b>Solder and check</li><li><b>6</b>Publish</li>
+      </ul>
+    </section>
+
     <section class="home-bench">
       <div class="white-card">
         <div class="eyebrow">When you're ready for a real bench</div>
         <h3>A small, sensible starter kit</h3>
         <ul class="kit-list">
-          <li>Breadboard, jumper wires, a 9 V battery clip and a switched 3×AA holder</li>
+          <li>Breadboard, jumper wires, a 9 V battery clip and a switched 3×AA holder (the final project adds a 4×AA holder and NiMH cells)</li>
           <li>A pack of resistors (an E12 assortment), red/green/blue LEDs, a few 100 µF and 1000 µF capacitors, buttons, a couple of NPN transistors and logic-level MOSFETs</li>
           <li>A digital multimeter with continuity and diode modes and a fused current input</li>
           <li>A temperature-controlled soldering iron with a stand, a chisel tip, brass-wool tip cleaner, flux-cored solder, solder wick and a practice board</li>

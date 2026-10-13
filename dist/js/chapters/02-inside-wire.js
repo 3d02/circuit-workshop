@@ -50,6 +50,36 @@ export default {
      </ul>
      <p>Notice the directions. The electrons drift left, yet we say the current flows right, the way the field points. That's the conventional current from {{ch:loop}}: negative charge moving left is the same flow of charge as positive charge moving right.</p>`,
     {
+      type: "formula",
+      id: "current",
+      name: "Current: charge per second",
+      eq: "I = Q ÷ t",
+      alt: ["Q = I × t", "t = Q ÷ I"],
+      vars: [
+        ["I", "current", "amperes, A"],
+        ["Q", "net charge that passes", "coulombs, C"],
+        ["t", "time taken", "seconds, s"],
+      ],
+      why: `<p>This is the definition of current: count the net charge crossing a line, and divide by how long you counted. One ampere is one coulomb per second, exactly what the counting line in the figure above measures.</p>`,
+      use: `<p>Battery capacity. A battery's mAh is Q = I × t written in milliamps and hours: a 2,000 mAh cell can deliver 2,000 mA for an hour, which is 2 A × 3,600 s = 7,200 C. You'll use this in {{ch:energy}}.</p>`,
+      example: `<p>A torch draws 0.5 A for one minute. How much charge passes?</p>
+                <span class="calc">Q = I × t = 0.5 A × 60 s = 30 C</span>
+                <p>That's 30 ÷ (1.6 × 10⁻¹⁹) ≈ 1.9 × 10²⁰ electrons, every one of which comes back to the battery.</p>`,
+    },
+    {
+      type: "formula",
+      id: "electrons",
+      name: "Counting electrons",
+      eq: "N = Q ÷ e",
+      vars: [
+        ["N", "number of electrons", "a plain count"],
+        ["Q", "charge", "coulombs, C"],
+        ["e", "charge of one electron", "1.6 × 10⁻¹⁹ C"],
+      ],
+      why: `<p>Charge comes in lumps: every electron carries the same tiny amount, e. So the total charge is the number of electrons times e.</p>`,
+      use: `<p>Getting a feel for scale. One amp is 6.25 × 10¹⁸ electrons a second, which is why nobody counts them one by one.</p>`,
+    },
+    {
       type: "predict",
       id: "inside-double",
       q: "You double the battery voltage, which doubles the field. What happens to the electrons' drift?",
@@ -87,9 +117,37 @@ export default {
              <p>The picture only goes so far. In a hose, the push travels from molecule to molecule as pressure. In a wire, electrons don't push each other along: each one is pushed directly by the field.</p>`,
     },
     { type: "custom", wide: false, render: (el) => driftCalc(el) },
+    {
+      type: "formula",
+      id: "drift",
+      name: "Drift speed",
+      eq: "v = I ÷ (n × A × e)",
+      vars: [
+        ["v", "average drift speed of the electrons", "metres per second, m/s"],
+        ["I", "current", "amperes, A"],
+        ["n", "free electrons per cubic metre", "copper: 8.5 × 10²⁸"],
+        ["A", "the wire's cross-section area", "square metres, m² (1 mm² = 10⁻⁶ m²)"],
+        ["e", "charge of one electron", "1.6 × 10⁻¹⁹ C"],
+      ],
+      why: `<p>In one second, every free electron within a distance v upstream of the counting line crosses it. Those electrons fill a cylinder of length v and area A, so there are n × A × v of them, carrying n × A × v × e coulombs. That charge per second is the current: I = n A v e. Rearrange for v.</p>`,
+      use: `<p>It explains why the drift is so slow (n is enormous) and why it's slower still in thick wires carrying the same current. The field, not the electrons, is what makes a lamp light instantly.</p>`,
+      example: `<p>0.3 A in a 0.5 mm² wire:</p>
+                <span class="calc">v = 0.3 ÷ (8.5 × 10²⁸ × 0.5 × 10⁻⁶ × 1.6 × 10⁻¹⁹) = 0.3 ÷ 6,800 = 4.4 × 10⁻⁵ m/s</span>
+                <p>That's 0.044 mm per second, the figure quoted above.</p>`,
+    },
     { type: "h2", text: "Where the field comes from" },
     `<p>A battery is a <strong>charge pump</strong>. Inside it, a chemical reaction moves charge (as ions, through the battery's paste) from one terminal to the other, even though the field inside the battery pushes the other way. That's what the battery's chemical energy is spent on, like a lift raising a load. The result: a little extra negative charge on the <b>−</b> terminal, and a shortage on the <b>+</b> terminal.</p>
-     <p>That separated charge doesn't stay at the terminals. Within nanoseconds of connecting a circuit, a tiny amount spreads out as a thin layer on the <em>surface</em> of the wires: positive along the side connected to <b>+</b>, negative along the side connected to <b>−</b>, changing gradually in between. It's far too little to notice, but it's this <strong>surface charge</strong> that shapes the field so that inside the wire it points along the wire, round every bend.</p>`,
+     <p>That separated charge doesn't stay at the terminals. Within nanoseconds of connecting a circuit, a tiny amount spreads out as a thin layer on the <em>surface</em> of the wires: positive along the side connected to <b>+</b>, negative along the side connected to <b>−</b>, changing gradually in between. It's far too little to notice, but it's this <strong>[[surface charge]]</strong> that shapes the field so that inside the wire it points along the wire, round every bend.</p>`,
+    `<p>Here's that charge in 3D. The amount is exaggerated enormously so you can see it, but its pattern is right. <strong>Drag to turn the circuit round</strong>, and look at where the signs sit.</p>`,
+    { type: "scene", scene: "wire3d", tasks: ["w3d-turn", "w3d-open", "w3d-volts"] },
+    `<p>Notice three things. The charge sits on the <em>outside</em> of the wire, never inside the metal. It changes <em>along the length</em> of the circuit: + all along the wire from the + terminal, − along the return wire, and the change is steepest across the filament. And it's astonishingly little: a few million extra charges on a centimetre of wire that holds hundreds of billions of billions of free electrons. That's about one extra charge for every hundred trillion free electrons, yet it's enough to steer the field round every corner.</p>`,
+    {
+      type: "note",
+      kind: "myth",
+      title: "Isn't the middle of the wire charged one way and the outside the other?",
+      html: `<p>It's a popular picture: a current-carrying wire polarised across its thickness, positive in the centre and negative outside. It isn't what happens. With a steady current, the inside of a metal stays neutral. Any extra charge spreads to the surface, and it varies <em>along the wire's length</em>, as in the 3D view.</p>
+             <p>There is one real effect across the thickness, and it goes the other way. The current makes a magnetic field round the wire, and that field nudges the moving electrons slightly toward the centre: the <em>pinch effect</em>. The centre ends up very slightly negative. In a household wire the sideways field this creates is about a billion times weaker than the field along the wire. It matters in lightning and in plasma, not in anything you'll build.</p>`,
+    },
     { type: "custom", tasks: ["fm-open", "fm-energy"], render: (el) => fieldMap(el) },
     `<p>Three things to notice:</p>
      <ul>
@@ -97,6 +155,23 @@ export default {
        <li><strong>Open the switch and the field inside every conductor vanishes.</strong> Charge piles up on the two faces of the gap, just enough to cancel the field inside the wires, so nothing drifts. The whole 9 V now sits across the gap: exactly what the voltmeter showed across a broken wire in {{ch:voltage}}.</li>
        <li><strong>Field and voltage are two views of the same thing.</strong> The voltage between two points is the push the field gives each coulomb of charge, added up along the way: the energy per coulomb. A strong field over a short length (the filament) is a big voltage drop; a weak field along a wire is a tiny one.</li>
      </ul>`,
+    {
+      type: "formula",
+      id: "field-uniform",
+      name: "Field along a uniform wire",
+      eq: "E = V ÷ L",
+      alt: ["V = E × L"],
+      vars: [
+        ["E", "electric field strength (later chapters use E for energy too; the units tell them apart)", "volts per metre, V/m"],
+        ["V", "voltage across that length", "volts, V"],
+        ["L", "the length", "metres, m"],
+      ],
+      why: `<p>Voltage is the field's push per coulomb added up along the way. Where the field is the same all along a piece of material, adding it up is just multiplying: V = E × L.</p>`,
+      use: `<p>Comparing parts of a circuit. A big voltage across a short filament means a strong field there; a tiny voltage along a long copper wire means a very weak one. It's also why sparks need a strong field: air breaks down at about 3 million V/m, so mains can only jump a fraction of a millimetre.</p>`,
+      example: `<p>A 9 V lamp has a filament about 2 cm long. Nearly all the 9 V is across it:</p>
+                <span class="calc">E = V ÷ L = 9 ÷ 0.02 = 450 V/m</span>
+                <p>The copper wire carrying the same current has only a few hundredths of a volt per metre along it.</p>`,
+    },
     { type: "h2", text: "Who carries the energy?" },
     `<p>Not the electrons. They're far too slow, and every electron that leaves the battery eventually comes back to it. The <strong>field delivers the energy</strong>: in the filament, the strong field pushes the electrons hard, they collide with the ions, and the ions' extra shaking is heat. In a lamp filament it gets hot enough to glow.</p>
      <p>And between the battery and the lamp, the energy travels through the space <em>around</em> the wires, carried by the electric field together with the magnetic field the current creates. Tick “Energy flow” in the figure above to see its path. The wires guide the energy; they don't carry it inside themselves. That's how energy can reach the lamp at nearly the speed of light while the electrons crawl.</p>`,
@@ -117,6 +192,61 @@ export default {
       kind: "myth",
       title: "Myth: a battery is a store of electrons",
       html: `<p>A battery has no spare electrons to send out. It's a pump: it uses chemical energy to keep charge separated across its terminals, and that keeps the field going. A flat battery contains exactly as many electrons as a fresh one. What it has run out of is chemical energy.</p>`,
+    },
+    {
+      type: "problems",
+      id: "inside-p",
+      title: "Charges and fields, on paper",
+      items: [
+        { id: "inside-p1", level: 1, q: "<p>A current of 2 A flows for 5 seconds. How much charge passes?</p>", unit: "C", answer: 10, hints: ["Q = I × t."], solution: "<p>Q = I × t = 2 A × 5 s = <b>10 C</b>.</p>" },
+        {
+          id: "inside-p2",
+          level: 1,
+          q: "<p>An LED runs at 1 mA. How many electrons pass through it each second?</p>",
+          unit: "electrons",
+          answer: 1e-3 / 1.602e-19,
+          hints: ["In one second, Q = I × t = 0.001 C.", "N = Q ÷ e = 0.001 ÷ (1.6 × 10⁻¹⁹)."],
+          solution: "<p>Q = 0.001 A × 1 s = 0.001 C. N = 0.001 ÷ (1.6 × 10⁻¹⁹) = <b>6.25 × 10¹⁵</b> electrons per second. Type it as <code>6.25e15</code>.</p>",
+        },
+        {
+          id: "inside-p3",
+          level: 2,
+          q: "<p>A phone battery is rated 4,000 mAh. How much charge is that in coulombs?</p>",
+          unit: "C",
+          answer: 14400,
+          hints: ["mAh is milliamps × hours. Convert both to base units.", "4,000 mA = 4 A, and 1 h = 3,600 s."],
+          solution: "<p>Q = I × t = 4 A × 3,600 s = <b>14,400 C</b>.</p>",
+        },
+        {
+          id: "inside-p4",
+          level: 2,
+          q: "<p>A 12 V heater in a camper van draws 10 A through copper wire with a 1.5 mm² cross-section. What is the electrons' drift speed? Copper has 8.5 × 10²⁸ free electrons per m³.</p>",
+          unit: "mm/s",
+          answer: (10 / (8.5e28 * 1.5e-6 * 1.602e-19)) * 1000,
+          tol: 0.03,
+          hints: ["v = I ÷ (n × A × e). Convert the area: 1.5 mm² = 1.5 × 10⁻⁶ m².", "n × A × e = 8.5 × 10²⁸ × 1.5 × 10⁻⁶ × 1.6 × 10⁻¹⁹ ≈ 20,400."],
+          solution: "<p>n × A × e = 8.5 × 10²⁸ × 1.5 × 10⁻⁶ × 1.6 × 10⁻¹⁹ = 20,400 C/m.</p><p>v = 10 ÷ 20,400 = 4.9 × 10⁻⁴ m/s = <b>0.49 mm/s</b>.</p>",
+        },
+        {
+          id: "inside-p5",
+          level: 3,
+          q: "<p>At that drift speed, how many minutes would one electron take to travel the 2 m from the van's battery to the heater?</p>",
+          unit: "min",
+          answer: 2 / (10 / (8.5e28 * 1.5e-6 * 1.602e-19)) / 60,
+          tol: 0.04,
+          hints: ["time = distance ÷ speed. Use the speed in m/s: 4.9 × 10⁻⁴.", "2 ÷ 0.00049 gives seconds; divide by 60."],
+          solution: "<p>t = 2 m ÷ 0.00049 m/s = 4,080 s, about <b>68 minutes</b>. The heater still warms up the moment you switch on, because the field arrives in nanoseconds and pushes the electrons already inside it.</p><p>(On mains AC the electrons don't travel at all: they jiggle back and forth by a few thousandths of a millimetre, 50 times a second.)</p>",
+        },
+        {
+          id: "inside-p6",
+          level: 2,
+          q: "<p>A torch bulb's filament is 1.5 cm long and has 4.5 V across it. What is the field strength inside it?</p>",
+          unit: "V/m",
+          answer: 4.5 / 0.015,
+          hints: ["E = V ÷ L, with L in metres: 0.015 m."],
+          solution: "<p>E = 4.5 ÷ 0.015 = <b>300 V/m</b>.</p>",
+        },
+      ],
     },
     { type: "h2", text: "The whole story, in five steps" },
     `<ol class="steps">

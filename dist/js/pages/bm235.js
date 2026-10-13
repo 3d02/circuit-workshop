@@ -3,6 +3,7 @@
 // and useful jobs around the house.
 
 import { POSITIONS, FEATURES, ITEMS, JACKS, MUST, USES, ACCURACY, SOURCES, SHUNTS, GHOST, LOZ_FLOOR, accuracy, parseReading, ghost, burden, dischargeTime } from "../data/bm235.js";
+import { autoTerms } from "../terms.js";
 import { CHAPTERS } from "../chapters/index.js";
 import { resolveRefs } from "../lesson.js";
 import { si } from "../format.js";
@@ -291,6 +292,7 @@ export function bm235(main) {
     svg.querySelector(".bm-lcd-flags").textContent = lcd.flags.map((f) => ({ AC: "~", DC: "⎓" })[f] || f).join("  ");
     svg.querySelectorAll(".bm-lcd-bars rect").forEach((r, i) => r.classList.toggle("lit", i < (lcd.bars || 0)));
     detail.innerHTML = detailHtml(item);
+    autoTerms(detail, "x-none");
   };
 
   svg.addEventListener("click", (ev) => {
@@ -464,6 +466,7 @@ export function bm235(main) {
     battery.querySelectorAll("input").forEach((x) => (x.oninput = run));
     run();
   }
+  autoTerms(main, ".bm-section > *");
 }
 
 function chipLabel(id) {
