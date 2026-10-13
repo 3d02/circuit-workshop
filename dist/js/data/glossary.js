@@ -52,7 +52,7 @@ export const TERMS = [
   { id: "capacitance", term: "capacitance", def: "How much charge a capacitor stores per volt across it, in farads: Q = C × V. Typical values run from picofarads to thousands of microfarads.", ch: "capacitors" },
   { id: "farad", term: "farad", also: ["farads"], def: "The unit of capacitance, F. One farad stores one coulomb per volt, which is huge: most capacitors are µF, nF or pF.", ch: "capacitors" },
   { id: "time-constant", term: "time constant", also: ["τ", "tau"], def: "τ = R × C. After one τ a charging capacitor is 63% of the way there; after five it is effectively done.", ch: "capacitors" },
-  { id: "inductance", term: "inductance", def: "How strongly a coil resists a change in its current, in henries. A changing current makes a voltage across it: V = L × (change of current per second).", ch: "transistors" },
+  { id: "inductance", term: "inductance", def: "How strongly a coil resists a change in its current, in henries. A changing current makes a voltage across it: V = L × (change of current per second).", ch: "coils" },
   { id: "flyback", term: "flyback diode", def: "A diode across a coil (relay, motor, solenoid) that gives its current a safe path when it's switched off, instead of a voltage spike.", ch: "transistors" },
   { id: "gain", term: "gain", also: ["β", "hFE"], def: "For a bipolar transistor, the collector current divided by the base current, typically 100 to 300. It varies a lot between parts.", ch: "transistors" },
   { id: "saturation", term: "saturation", def: "A bipolar transistor switched fully on: more base current no longer increases the collector current, and only about 0.1–0.2 V is left across it.", ch: "transistors" },
@@ -60,9 +60,9 @@ export const TERMS = [
   { id: "rdson", term: "R_DS(on)", also: ["RDS(on)", "on-resistance"], def: "A MOSFET's resistance when it's switched fully on, at a stated gate voltage. The heat it makes is I² × R_DS(on).", ch: "transistors" },
   { id: "pwm", term: "PWM", also: ["pulse-width modulation"], def: "Switching something fully on and off quickly, and varying the fraction of time it's on, to control the average power. Used for dimming LEDs and controlling motors.", ch: "transistors" },
   { id: "duty-cycle", term: "duty cycle", def: "The fraction of each cycle a signal spends on. 25% duty means on for a quarter of the time.", ch: "transistors" },
-  { id: "datasheet", term: "datasheet", def: "The manufacturer's document for a part: pinout, ratings, typical behaviour and example circuits. The final authority on what a part can do.", ch: "transistors" },
-  { id: "abs-max", term: "absolute maximum", also: ["absolute maximum ratings"], def: "Limits that damage the part if exceeded, even briefly. They are not operating targets: design well inside them.", ch: "transistors" },
-  { id: "thermal-resistance", term: "thermal resistance", also: ["°C/W"], def: "How many degrees a part heats up for each watt it dissipates. A TO-220 package in still air is roughly 60 °C/W.", ch: "transistors" },
+  { id: "datasheet", term: "datasheet", def: "The manufacturer's document for a part: pinout, ratings, typical behaviour and example circuits. The final authority on what a part can do.", ch: "datasheets" },
+  { id: "abs-max", term: "absolute maximum", also: ["absolute maximum ratings"], def: "Limits that damage the part if exceeded, even briefly. They are not operating targets: design well inside them.", ch: "datasheets" },
+  { id: "thermal-resistance", term: "thermal resistance", also: ["°C/W"], def: "How many degrees a part heats up for each watt it dissipates. A TO-220 package in still air is roughly 60 °C/W.", ch: "datasheets" },
 
   // ---------- AC ----------
   { id: "dc", term: "DC", also: ["direct current"], def: "Current or voltage that keeps the same direction, like a battery's.", ch: "multimeter" },

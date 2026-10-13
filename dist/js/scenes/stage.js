@@ -289,3 +289,31 @@ export function signTexture(sign, color) {
   signCache.set(key, tex);
   return tex;
 }
+
+// A hollow ring, for holes in a semiconductor: drawn as camera-facing points.
+const ringCache = new Map();
+export function ringTexture(color) {
+  if (ringCache.has(color)) return ringCache.get(color);
+  const c = document.createElement("canvas");
+  c.width = c.height = 64;
+  const g = c.getContext("2d");
+  g.strokeStyle = color;
+  g.lineWidth = 9;
+  g.beginPath();
+  g.arc(32, 32, 22, 0, Math.PI * 2);
+  g.stroke();
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  ringCache.set(color, tex);
+  return tex;
+}
+
+// A set of camera-facing points whose positions are updated each frame.
+export function pointCloud(n, map, size) {
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(n * 3), 3));
+  const pts = new THREE.Points(geo, new THREE.PointsMaterial({ map, size, sizeAttenuation: true, transparent: true, depthWrite: false, alphaTest: 0.2 }));
+  pts.set = (i, x, y, z) => geo.attributes.position.setXYZ(i, x, y, z);
+  pts.done = () => (geo.attributes.position.needsUpdate = true);
+  return pts;
+}

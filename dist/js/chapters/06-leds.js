@@ -21,8 +21,10 @@ export default {
   id: "leds",
   title: "Diodes and LEDs",
   lede: "A diode lets current through in one direction only. An LED is a diode that glows, and it's the first thing most people build. Here's how to light one without destroying it.",
-  minutes: 25,
+  minutes: 40,
   goals: [
+    "Explain what happens inside a PN junction, and why it only conducts one way",
+    "Work out a photon's energy from its colour, and relate it to the LED's voltage",
     "Get a diode's direction right, and know what happens when you don't",
     "Read an LED's curve and see why it always needs a resistor",
     "Calculate a safe resistor for an LED and pick a standard value",
@@ -68,6 +70,29 @@ export default {
       },
     },
     `<p>Diodes are used to protect circuits from batteries fitted backwards, to turn AC into DC in power supplies, and (as you'll see in {{ch:transistors}}) to protect transistors from voltage spikes.</p>`,
+    { type: "h2", text: "Inside a diode: the PN junction" },
+    `<p>Why one way only? A diode is a single crystal of semiconductor, made deliberately impure in two different ways. One half is <strong>n-type</strong>: a few atoms in every million are replaced with atoms that have one electron too many, so it's full of free electrons. The other half is <strong>p-type</strong>: the added atoms have one electron too few, leaving <em>holes</em>, gaps that electrons can hop into, which move around like positive charges.</p>
+     <p>Where the halves meet, free electrons wander across and fill nearby holes. That leaves a thin <strong>depletion zone</strong> with no free carriers at all, just fixed atoms that are now charged: negative on the p side, positive on the n side. Those charges make a field across the zone that stops any more crossing. That built-in barrier is the diode's toll.</p>
+     <p>Push the right way (p side positive), and the battery shrinks the zone until carriers can cross again: current flows. Push the other way, and the battery pulls carriers further from the junction: the zone widens and nothing flows. <strong>Try both below.</strong></p>`,
+    { type: "scene", scene: "junction3d", tasks: ["pn-glow", "pn-reverse", "pn-blue"] },
+    `<p>In an LED, each electron that drops into a hole gives up its energy as one particle of light, a <strong>photon</strong>. The energy it gives up is set by the material, and the energy of a photon sets its colour. That's why each colour of LED needs a different voltage: the battery has to give each electron at least the energy it will hand over as light. In a silicon diode the same energy comes out as heat instead, which is why silicon doesn't glow.</p>`,
+    {
+      type: "formula",
+      id: "photon",
+      name: "The energy of a photon",
+      eq: "E = h × c ÷ λ",
+      alt: ["in electron-volts: E ≈ 1240 ÷ λ(nm)"],
+      vars: [
+        ["E", "energy of one photon", "joules, J; or electron-volts, eV"],
+        ["h", "Planck's constant", "6.63 × 10⁻³⁴ J·s"],
+        ["c", "the speed of light", "3.00 × 10⁸ m/s"],
+        ["λ", "wavelength (Greek lambda): sets the colour", "metres, m; or nanometres, nm"],
+      ],
+      why: `<p>Light comes in packets whose energy is proportional to their frequency, f = c ÷ λ. Planck's constant is the conversion factor. One electron-volt is the energy one electron gains crossing 1 V ({{ch:voltage}}), so the photon's energy in eV is roughly the minimum voltage an LED of that colour needs.</p>`,
+      use: `<p>Predicting an LED's forward voltage from its colour: red 630 nm needs about 2.0 V, blue 465 nm about 2.7 V (real blue LEDs need about 3 V, because of extra losses). White LEDs are blue LEDs coated with a phosphor that turns some of the blue into yellow.</p>`,
+      example: `<p>A red LED at 630 nm:</p>
+                <span class="calc">E = 1240 ÷ 630 = 1.97 eV  →  it needs at least about 2 V</span>`,
+    },
     { type: "h2", text: "LEDs: diodes that glow" },
     `<p>An <strong>LED</strong> (light-emitting diode) is a diode built so that some of that toll comes out as light. Its toll is bigger, and depends on the colour: around 2 V for red, 3 V for blue and white.</p>
      <p>Here's the important part. Below its toll voltage, an LED lets almost nothing through. Above it, the current climbs <em>steeply</em>: a fraction of a volt more and the current multiplies. You can see this in the orange curve under the circuit below.</p>`,
@@ -153,8 +178,26 @@ export default {
       },
     },
     { type: "h2", text: "Choosing the resistor" },
-    `<p>Here's the calculation you'll use every time you add an LED to a project. Going round the loop, the LED takes its toll voltage and the resistor must take the rest. You choose the current you want; Ohm's law gives the resistor:</p>
-     <p class="formula-block">R = (V<sub>supply</sub> − V<sub>LED</sub>) ÷ I<small>for a red LED on 9 V at 10 mA: (9 − 2) ÷ 0.01 = 700 Ω</small></p>
+    `<p>Here's the calculation you'll use every time you add an LED to a project. Going round the loop, the LED takes its toll voltage and the resistor must take the rest. You choose the current you want; Ohm's law gives the resistor:</p>`,
+    {
+      type: "formula",
+      id: "led-resistor",
+      name: "The LED resistor",
+      eq: "R = (V<sub>supply</sub> − V<sub>f</sub>) ÷ I",
+      alt: ["P<sub>R</sub> = (V<sub>supply</sub> − V<sub>f</sub>) × I"],
+      vars: [
+        ["R", "the series resistor", "ohms, Ω"],
+        ["V<sub>supply</sub>", "the supply voltage", "volts, V"],
+        ["V<sub>f</sub>", "the LED's forward voltage at that current", "volts, V"],
+        ["I", "the LED current you want", "amperes, A"],
+        ["P<sub>R</sub>", "heat in the resistor", "watts, W"],
+      ],
+      why: `<p>Kirchhoff's voltage law: the resistor takes whatever the LED doesn't, V<sub>supply</sub> − V<sub>f</sub>. Then Ohm's law gives the resistor for the current you want, and P = V × I gives its heat.</p>`,
+      use: `<p>Every indicator LED, and the first sum of any LED project. Check the resistor's power too: on 12 V at 20 mA, a red LED's resistor makes 0.2 W, close to a ¼ W rating.</p>`,
+      example: `<p>A red LED (2.0 V) on 9 V at 10 mA:</p>
+                <span class="calc">R = (9 − 2) ÷ 0.01 = 700 Ω   P = 7 × 0.01 = 0.07 W</span>`,
+    },
+    `
      <p>You can't buy a 700 Ω resistor. Resistors come in <strong>standard values</strong>: 100, 120, 150, 180, 220, 270, 330, 390, 470, 560, 680, 820, then the same again ×10. Pick the nearest one: 680 Ω gives 10.3 mA, which is perfect. When in doubt, round <em>up</em>: a little less current is always safe.</p>
      <p>Most small indicator LEDs are happy at 5–15 mA and have a maximum around 20 mA. Modern LEDs are bright; 2–5 mA is often plenty for a status light.</p>`,
     {
@@ -190,6 +233,57 @@ export default {
       kind: "deeper",
       title: "Why not just use a 2 V supply and skip the resistor?",
       html: `<p>Because the toll voltage isn't exact. It varies from LED to LED, and drops as the LED warms up. On that steep curve, a 0.1 V difference can double the current. The resistor makes the current depend mostly on itself, and resistors are precise and stable. (Specialised LED drivers do the same job more efficiently, for high-power lighting.)</p>`,
+    },
+    {
+      type: "note",
+      kind: "deeper",
+      title: "Why the curve is so steep: the diode equation",
+      html: `<p>The current through a junction grows exponentially with the voltage: I = I<sub>s</sub> × (e<sup>V ÷ (n × V<sub>T</sub>)</sup> − 1), where V<sub>T</sub> is about 26 mV at room temperature and n is between 1 and 2. For an ideal silicon junction (n = 1), every extra 60 mV multiplies the current by ten. That's why a tiny change in voltage near the knee makes a huge change in current, and why you set an LED's current with something else, never with its voltage. The simulator in this course uses exactly this equation.</p>`,
+    },
+    {
+      type: "problems",
+      id: "led-p",
+      title: "LEDs and light, on paper",
+      items: [
+        { id: "led-p1", level: 1, q: "<p>A green LED (2.2 V) runs from 5 V at 15 mA. What resistor does it need?</p>", unit: "Ω", answer: (5 - 2.2) / 0.015, hints: ["R = (V<sub>supply</sub> − V<sub>f</sub>) ÷ I."], solution: "<p>R = (5 − 2.2) ÷ 0.015 = 2.8 ÷ 0.015 = <b>187 Ω</b>. The nearest standard value at or above it is 220 Ω, giving 12.7 mA.</p>" },
+        { id: "led-p2", level: 1, q: "<p>A red LED (2.0 V) on 12 V with a 680 Ω resistor. What current flows?</p>", unit: "mA", answer: (10 / 680) * 1000, hints: ["The resistor has 12 − 2 = 10 V across it."], solution: "<p>I = 10 ÷ 680 = <b>14.7 mA</b>.</p>" },
+        {
+          id: "led-p3",
+          level: 2,
+          q: "<p>A white LED (3.1 V) runs at 20 mA from 12 V. How much power does its resistor turn into heat?</p>",
+          unit: "W",
+          answer: (12 - 3.1) * 0.02,
+          hints: ["P = V × I, with V the resistor's voltage: 12 − 3.1."],
+          solution: "<p>P = 8.9 × 0.02 = <b>0.18 W</b>. Fine for a ¼ W resistor, but it's 74% of the power: the LED only gets 0.06 W. That's why lighting uses current regulators instead.</p>",
+        },
+        {
+          id: "led-p4",
+          level: 2,
+          q: "<p>What is the energy of one photon of blue light, wavelength 465 nm, in electron-volts?</p>",
+          unit: "eV",
+          answer: 1240 / 465,
+          hints: ["E ≈ 1240 ÷ λ, with λ in nm."],
+          solution: "<p>E = 1240 ÷ 465 = <b>2.67 eV</b>. So a blue LED needs at least 2.7 V, and in practice about 3 V.</p>",
+        },
+        {
+          id: "led-p5",
+          level: 3,
+          q: "<p>A red LED gives off 630 nm light. Using E = h × c ÷ λ, what is one photon's energy in joules?</p>",
+          unit: "J",
+          answer: (6.626e-34 * 2.998e8) / 630e-9,
+          hints: ["h × c = 6.63 × 10⁻³⁴ × 3.00 × 10⁸ = 1.99 × 10⁻²⁵ J·m.", "Divide by 630 × 10⁻⁹ m."],
+          solution: "<p>E = 1.99 × 10⁻²⁵ ÷ 6.3 × 10⁻⁷ = <b>3.15 × 10⁻¹⁹ J</b>. Divide by 1.6 × 10⁻¹⁹ to get 1.97 eV.</p>",
+        },
+        {
+          id: "led-p6",
+          level: 3,
+          q: "<p>An indicator LED draws 2 mA, all day, every day, from a CR2032 coin cell rated 220 mAh. How many days does it last?</p>",
+          unit: "days",
+          answer: 220 / 2 / 24,
+          hints: ["t = Q ÷ I gives hours. Divide by 24."],
+          solution: "<p>220 ÷ 2 = 110 hours = <b>4.6 days</b>. That's why battery gadgets blink their LEDs briefly instead of leaving them on.</p>",
+        },
+      ],
     },
     { type: "h2", text: "Build it for real" },
     {

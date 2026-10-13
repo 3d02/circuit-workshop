@@ -395,4 +395,6 @@ export const LEDS = {
   green: { is: 3e-20, n: 2, rs: 9, vf: 2.25, hue: "#5cff7a", name: "Green" },
   blue: { is: 1e-26, n: 2, rs: 10, vf: 3.05, hue: "#4b8bff", name: "Blue" },
   white: { is: 1e-26, n: 2, rs: 10, vf: 3.05, hue: "#f4f6ff", name: "White" },
+  // A 1 W white LED on a star board: about 2.85 V at 10 mA (vf), 3.1 V at 350 mA.
+  power: { is: 2.2e-26, n: 2, rs: 0.3, vf: 2.85, hue: "#f4f6ff", name: "1 W white" },
 };
