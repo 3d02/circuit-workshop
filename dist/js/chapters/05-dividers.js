@@ -12,6 +12,8 @@ export default {
     "Use a voltage divider to make a smaller voltage",
     "Use a potentiometer as an adjustable divider",
     "Explain why connecting a load changes a divider's output",
+    "Use Kirchhoff's current law at a junction",
+    "Spot when your own meter is changing the voltage it measures",
   ],
   blocks: [
     `<p>There are only two ways to connect two parts:</p>
@@ -95,20 +97,71 @@ export default {
         ],
       },
     },
-    `<p>Hover over each lamp to compare voltages and currents. The rules, written down:</p>
-     <ul>
-       <li><strong>Series resistances add:</strong> R<sub>total</sub> = R<sub>1</sub> + R<sub>2</sub>. Two 12 Ω lamps in series behave like one 24 Ω lamp.</li>
-       <li><strong>Parallel resistances combine to less than the smallest one:</strong> two equal resistors in parallel make half the resistance. More paths, easier flow.</li>
-     </ul>`,
+    `<p>Hover over each lamp to compare voltages and currents. The rules, written down, start with the simplest.</p>`,
     {
-      type: "note",
-      kind: "deeper",
-      title: "The general parallel formula",
-      html: `<p>For any two resistors in parallel: R<sub>total</sub> = (R<sub>1</sub> × R<sub>2</sub>) ÷ (R<sub>1</sub> + R<sub>2</sub>). For more than two, add up the <em>conductances</em> (1/R) and flip the result: 1/R<sub>total</sub> = 1/R<sub>1</sub> + 1/R<sub>2</sub> + 1/R<sub>3</sub> …</p>`,
+      type: "formula",
+      id: "series",
+      name: "Resistors in series",
+      eq: "R<sub>total</sub> = R₁ + R₂ + R₃ + …",
+      vars: [
+        ["R<sub>total</sub>", "the single resistance that would behave the same", "ohms, Ω"],
+        ["R₁, R₂…", "each resistance in the chain", "ohms, Ω"],
+      ],
+      why: `<p>The same current I flows through each part. Each drops I × R, and by Kirchhoff's voltage law the drops add up: V = I×R₁ + I×R₂ = I × (R₁ + R₂). So the chain behaves like one resistor of R₁ + R₂.</p>`,
+      use: `<p>An LED and its resistor, a string of fairy lights, a long cable plus the appliance at its end. Any series chain carries one current, set by the total.</p>`,
+      example: `<p>Two 12 Ω lamps in series on 6 V:</p>
+                <span class="calc">R = 12 + 12 = 24 Ω  →  I = 6 ÷ 24 = 0.25 A</span>
+                <p>Each lamp drops 0.25 × 12 = 3 V and makes 0.75 W: a quarter of the 3 W it makes alone.</p>`,
+    },
+    {
+      type: "formula",
+      id: "kcl",
+      name: "Kirchhoff's current law",
+      eq: "I<sub>in</sub> = I<sub>out</sub>",
+      alt: ["at a junction: I = I₁ + I₂ + …"],
+      vars: [
+        ["I<sub>in</sub>", "total current flowing into a junction", "amperes, A"],
+        ["I<sub>out</sub>", "total current flowing out of it", "amperes, A"],
+      ],
+      why: `<p>Charge can't pile up at a junction or vanish from it (you saw in {{ch:inside}} that even a tiny pile-up creates a field that stops it). So whatever flows in must flow out. It's the same reason the current was equal all round the loop in {{ch:loop}}.</p>`,
+      use: `<p>House wiring: the current through your main fuse is the sum of every appliance's current. In fault finding, a branch that takes more than its share is suspect.</p>`,
+      example: `<p>The parallel lamps: each takes 0.5 A, so the battery supplies</p>
+                <span class="calc">I = 0.5 + 0.5 = 1.0 A</span>`,
+    },
+    {
+      type: "formula",
+      id: "parallel",
+      name: "Resistors in parallel",
+      eq: "1/R<sub>total</sub> = 1/R₁ + 1/R₂ + …",
+      alt: ["for two: R<sub>total</sub> = R₁ × R₂ ÷ (R₁ + R₂)"],
+      vars: [
+        ["R<sub>total</sub>", "the single resistance that would behave the same", "ohms, Ω"],
+        ["R₁, R₂…", "each branch's resistance", "ohms, Ω"],
+      ],
+      why: `<p>Every branch has the same voltage V across it. Each draws V ÷ R, and by the current law the branch currents add: I = V/R₁ + V/R₂ = V × (1/R₁ + 1/R₂). Compare with I = V ÷ R<sub>total</sub>.</p>`,
+      use: `<p>Your fingers across a resistor you're measuring, a meter in parallel with what it measures, and why in-circuit readings come out low. The result is always smaller than the smallest branch: more paths, easier flow.</p>`,
+      example: `<p>A 10 kΩ resistor, measured while your fingers (about 100 kΩ) pinch both ends:</p>
+                <span class="calc">R = 10,000 × 100,000 ÷ 110,000 = 9,090 Ω</span>`,
     },
     { type: "h2", text: "Voltage dividers: making a smaller voltage" },
-    `<p>Two resistors in series share the voltage in proportion to their resistance. Tap the point between them and you have a new, smaller voltage. This is a <strong>voltage divider</strong>, and it's everywhere: reading sensors, setting reference levels, scaling a big voltage down so a microcontroller can measure it.</p>
-     <p class="formula-block">V<sub>out</sub> = V<sub>in</sub> × R<sub>bottom</sub> ÷ (R<sub>top</sub> + R<sub>bottom</sub>)</p>
+    `<p>Two resistors in series share the voltage in proportion to their resistance. Tap the point between them and you have a new, smaller voltage. This is a <strong>voltage divider</strong>, and it's everywhere: reading sensors, setting reference levels, scaling a big voltage down so a microcontroller can measure it.</p>`,
+    {
+      type: "formula",
+      id: "divider",
+      name: "Voltage divider",
+      eq: "V<sub>out</sub> = V<sub>in</sub> × R<sub>bottom</sub> ÷ (R<sub>top</sub> + R<sub>bottom</sub>)",
+      vars: [
+        ["V<sub>out</sub>", "voltage at the tap, measured from ground", "volts, V"],
+        ["V<sub>in</sub>", "voltage across the whole divider", "volts, V"],
+        ["R<sub>top</sub>", "resistor between V<sub>in</sub> and the tap", "ohms, Ω"],
+        ["R<sub>bottom</sub>", "resistor between the tap and ground", "ohms, Ω"],
+      ],
+      why: `<p>It's just a series circuit. The current is I = V<sub>in</sub> ÷ (R<sub>top</sub> + R<sub>bottom</sub>), and the output is the drop across the bottom resistor: I × R<sub>bottom</sub>. Put the two together. It only holds while nothing draws current from the tap.</p>`,
+      use: `<p>Sensors (a light- or temperature-dependent resistor as one half), volume knobs, a microcontroller watching a battery's voltage, and inside your meter: its 10 MΩ input is a chain of resistors that divides big voltages down.</p>`,
+      example: `<p>Scale 12 V down with 10 kΩ on top and 4.7 kΩ underneath:</p>
+                <span class="calc">V<sub>out</sub> = 12 × 4.7 ÷ (10 + 4.7) = 12 × 0.320 = 3.84 V</span>`,
+    },
+    `
      <p>A <strong>potentiometer</strong> (a “pot”, like a volume knob) is a divider you can adjust: a resistive track with a sliding contact, the <em>wiper</em>. Slide it up and the bottom part of the track gets bigger, so the output rises.</p>`,
     {
       type: "figure",
@@ -192,6 +245,75 @@ export default {
       kind: "repair",
       title: "Why in-circuit resistance readings lie",
       html: `<p>Measure a resistor while it's still soldered into a board and the meter sees it <em>in parallel</em> with everything else connected across the same two points. The reading comes out lower than the resistor's real value. If a reading looks suspicious, lift one leg of the part and measure again.</p>`,
+    },
+    { type: "h2", text: "Your meter is a load too" },
+    `<p>A voltmeter has to draw <em>some</em> current to measure anything. Your BM235 on V puts [[10 MΩ|input impedance]] across whatever it touches: that's its <strong>input impedance</strong>. Next to a 10 kΩ divider, 10 MΩ is a thousand times bigger and changes nothing you could see. But measure the middle of a divider built from 1 MΩ resistors and the meter becomes a real load, in parallel with the bottom resistor, exactly like the 1 kΩ load above.</p>
+     <p>The display will then read about 5% low, even though the meter's own accuracy is better than 0.5%. The meter isn't wrong. It measured, precisely, a circuit that it had changed. This is called <em>loading</em>, and spotting it is a real meter skill: if a high-resistance circuit reads lower than you expected, suspect the meter.</p>`,
+    {
+      type: "bench",
+      id: "bench-divider",
+      title: "Build a divider, and catch your meter loading it",
+      intro: "Your first breadboard circuit. A breadboard's holes are joined in strips underneath, so parts pushed into the same strip are connected without soldering.",
+      setup: { dial: "V, with ⎓ showing", leads: "black in COM, red in V Ω", need: "breadboard, 9 V battery and clip, two 10 kΩ and two 1 MΩ resistors" },
+      steps: [
+        "Measure the battery first: black on −, red on +. Write it down; it won't be exactly 9 V.",
+        "Push the two 10 kΩ resistors into the breadboard in series: one end of each in a shared strip, which is the output. Connect the free ends to the battery's + and −.",
+        "Black probe on the battery's −, red on the output strip. Note the reading.",
+        "Replace the two 10 kΩ resistors with the two 1 MΩ ones and measure the output again.",
+        "Disconnect the battery when you're done: the divider drains it slowly all the time.",
+      ],
+      record: [
+        { label: "Output with 10 kΩ", unit: "V", min: 4.2, max: 4.9, ok: "Half the battery voltage, give or take the resistors' 5% tolerance.", low: "Lower than half: check the battery reading and that both resistors are 10 kΩ.", high: "Higher than half: check the battery, and that the resistors are the right way round in the strips." },
+        { label: "Output with 1 MΩ", unit: "V", min: 3.9, max: 4.55, ok: "Lower than half, about 5% low. That's the meter's 10 MΩ input pulling it down.", low: "Very low: check the resistor values (1 MΩ is brown-black-green).", high: "Exactly half? Check the resistors really are 1 MΩ." },
+      ],
+      expect: `<p>With 10 kΩ resistors you should see half the battery voltage. With 1 MΩ resistors it reads about 5% lower. Work it out: 1 MΩ in parallel with 10 MΩ is 0.909 MΩ, so the divider gives 9 × 0.909 ÷ 1.909 = 4.29 V instead of 4.5 V (problem 7 below).</p>
+               <p>So when you measure voltages in high-resistance circuits (sensors, timing circuits, anything with megohms), remember that the meter is part of the circuit.</p>`,
+    },
+    {
+      type: "problems",
+      id: "div-p",
+      title: "Series, parallel and dividers, on paper",
+      items: [
+        { id: "div-p1", level: 1, q: "<p>220 Ω, 330 Ω and 470 Ω in series. What's the total resistance?</p>", unit: "Ω", answer: 1020, hints: ["In series, add them."], solution: "<p>220 + 330 + 470 = <b>1,020 Ω</b>.</p>" },
+        { id: "div-p2", level: 1, q: "<p>Two 1 kΩ resistors in parallel. What's the total?</p>", unit: "Ω", answer: 500, hints: ["Two equal resistors in parallel give half of one."], solution: "<p>1,000 × 1,000 ÷ 2,000 = <b>500 Ω</b>.</p>" },
+        { id: "div-p3", level: 2, q: "<p>A 10 kΩ resistor in parallel with 100 kΩ. What's the total?</p>", unit: "kΩ", answer: (10 * 100) / 110, hints: ["Product over sum: R₁ × R₂ ÷ (R₁ + R₂). You can work in kΩ throughout."], solution: "<p>10 × 100 ÷ 110 = <b>9.09 kΩ</b>: a bit less than the smaller one, as always.</p>" },
+        {
+          id: "div-p4",
+          level: 2,
+          q: "<p>A battery feeds three branches in parallel. It supplies 200 mA in total; two branches take 120 mA and 45 mA. How much does the third take?</p>",
+          unit: "mA",
+          answer: 35,
+          hints: ["Kirchhoff's current law: the branch currents add up to the total."],
+          solution: "<p>200 = 120 + 45 + I₃, so I₃ = <b>35 mA</b>.</p>",
+        },
+        {
+          id: "div-p5",
+          level: 2,
+          q: "<p>A divider has 10 kΩ on top and 4.7 kΩ underneath, across 12 V. What's the output?</p>",
+          unit: "V",
+          answer: (12 * 4.7) / 14.7,
+          hints: ["V<sub>out</sub> = V<sub>in</sub> × R<sub>bottom</sub> ÷ (R<sub>top</sub> + R<sub>bottom</sub>)."],
+          solution: "<p>12 × 4.7 ÷ 14.7 = <b>3.84 V</b>.</p>",
+        },
+        {
+          id: "div-p6",
+          level: 3,
+          q: "<p>A microcontroller can measure up to 3.3 V. You want to watch a battery that can reach 6.0 V, using a divider with 10 kΩ on the bottom. What top resistor makes 6.0 V come out as exactly 3.3 V?</p>",
+          unit: "kΩ",
+          answer: (10 * (6 - 3.3)) / 3.3,
+          hints: ["The top resistor must drop 6.0 − 3.3 = 2.7 V while the bottom drops 3.3 V.", "Same current through both, so their resistances are in the same ratio as their voltages: R<sub>top</sub> = 10 kΩ × 2.7 ÷ 3.3."],
+          solution: "<p>R<sub>top</sub> = 10 × 2.7 ÷ 3.3 = <b>8.18 kΩ</b>. The nearest standard value at or above it is 8.2 kΩ, which keeps the output just under 3.3 V. You'll meet this circuit again in the flashlight.</p>",
+        },
+        {
+          id: "div-p7",
+          level: 3,
+          q: "<p>A divider of two 1 MΩ resistors sits across 9.0 V. Your meter, with its 10 MΩ input, measures the output. What does it read?</p>",
+          unit: "V",
+          answer: (9 * (1 / (1 / 1 + 1 / 10))) / (1 + 1 / (1 / 1 + 1 / 10)),
+          hints: ["The meter is in parallel with the bottom resistor: 1 MΩ ∥ 10 MΩ.", "1 × 10 ÷ 11 = 0.909 MΩ. Now use the divider formula with that as R<sub>bottom</sub>."],
+          solution: "<p>R<sub>bottom</sub> = 1 ∥ 10 = 0.909 MΩ. V<sub>out</sub> = 9 × 0.909 ÷ (1 + 0.909) = <b>4.29 V</b>: 4.8% below the 4.5 V you'd expect.</p>",
+        },
+      ],
     },
     {
       type: "quiz",

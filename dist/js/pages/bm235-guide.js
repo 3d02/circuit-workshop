@@ -5,6 +5,7 @@
 import { GROUPS, SECTIONS, SOURCES } from "../data/bm235-guide.js";
 import { CHAPTERS } from "../chapters/index.js";
 import { resolveRefs } from "../lesson.js";
+import { autoTerms, GO_KEY } from "../terms.js";
 
 // Hands a front-panel selection to the field guide (a bare #word is all a route can carry).
 export const PANEL_KEY = "bm235-show";
@@ -126,6 +127,18 @@ export function bm235Guide(main) {
   const onScroll = () => (frame ||= requestAnimationFrame(mark));
   addEventListener("scroll", onScroll, { passive: true });
   mark();
+
+  autoTerms(main.querySelector(".bmg-body"), "article");
+  // Arriving from a term's "On your BM235" link: go straight to that function.
+  let go = null;
+  try {
+    go = sessionStorage.getItem(GO_KEY);
+    sessionStorage.removeItem(GO_KEY);
+  } catch {
+    // No storage: open at the top.
+  }
+  const target = go && main.querySelector(`#bmg-${go}`);
+  if (target) requestAnimationFrame(() => target.scrollIntoView({ block: "start" }));
   return () => {
     removeEventListener("scroll", onScroll);
     cancelAnimationFrame(frame);

@@ -7,6 +7,8 @@ import { atlas } from "./pages/atlas.js";
 import { tools } from "./pages/tools.js";
 import { bm235 } from "./pages/bm235.js";
 import { bm235Guide } from "./pages/bm235-guide.js";
+import { formulas } from "./pages/formulas.js";
+import { initTerms, setTermChapters } from "./terms.js";
 
 const main = document.getElementById("main");
 let cleanup = null;
@@ -59,23 +61,27 @@ function route() {
   if (i >= 0) {
     const chapter = CHAPTERS[i];
     cleanup = renderChapter(chapter, main, { prev: CHAPTERS[i - 1], next: CHAPTERS[i + 1], chapters: CHAPTERS });
-    nav = hash === "soldering" || hash === "repair" ? hash : "home";
+    nav = "home";
     title = `${chapter.title} · Circuit Workshop`;
   } else if (hash === "parts" || hash.startsWith("part-")) {
     cleanup = atlas(main, hash.slice(5));
     nav = "parts";
     title = "Parts · Circuit Workshop";
+  } else if (hash === "formulas") {
+    cleanup = formulas(main);
+    nav = "formulas";
+    title = "Formulas · Circuit Workshop";
   } else if (hash === "tools") {
     cleanup = tools(main);
     nav = "tools";
     title = "Tools · Circuit Workshop";
   } else if (hash === "bm235") {
     cleanup = bm235(main);
-    nav = "tools";
+    nav = "meter";
     title = "Brymen BM235 · Circuit Workshop";
   } else if (hash === "bm235-guide") {
     cleanup = bm235Guide(main);
-    nav = "tools";
+    nav = "meter";
     title = "BM235 complete guide · Circuit Workshop";
   } else {
     cleanup = home(main);
@@ -105,6 +111,8 @@ document.querySelector(".skip").addEventListener("click", (ev) => {
   main.focus();
 });
 
+setTermChapters(CHAPTERS);
+initTerms();
 addEventListener("hashchange", route);
 progress.on(updateProgressPill);
 route();

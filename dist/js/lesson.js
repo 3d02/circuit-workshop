@@ -4,6 +4,8 @@
 import { Figure } from "./figure.js";
 import { progress } from "./progress.js";
 import { esc } from "./format.js";
+import { renderFormula, renderProblems, renderBench, renderScene } from "./blocks.js";
+import { linkTerms } from "./terms.js";
 
 const NOTE_KINDS = {
   myth: { icon: "✕", title: "Common misconception" },
@@ -20,7 +22,9 @@ export function chapterTasks(chapter) {
   for (const b of chapter.blocks) {
     if (b.type === "figure") for (const g of b.spec.goals || []) ids.push(g.id);
     if (b.type === "predict" || b.type === "quiz") ids.push(b.id);
-    if (b.type === "custom" && b.tasks) ids.push(...b.tasks);
+    if ((b.type === "custom" || b.type === "scene") && b.tasks) ids.push(...b.tasks);
+    if (b.type === "problems") ids.push(...b.items.map((p) => p.id));
+    if (b.type === "bench") ids.push(b.id);
   }
   return ids;
 }
@@ -33,14 +37,20 @@ export function resolveRefs(text, chapters) {
   });
 }
 
+// Chapter links and tappable terms, in every piece of text a block carries.
+// Figure specs are left alone: they hold functions and live part objects.
 function withRefs(block, chapters) {
-  const r = (v) => (typeof v === "string" ? resolveRefs(v, chapters) : v);
-  if (typeof block === "string") return r(block);
-  const out = { ...block };
-  for (const k of ["html", "title", "q", "detail", "explain"]) out[k] = r(out[k]);
-  if (out.why) out.why = out.why.map(r);
-  if (out.questions) out.questions = out.questions.map((q) => ({ ...q, q: r(q.q), explain: r(q.explain) }));
-  return out;
+  const walk = (v, key) => {
+    if (typeof v === "string") return key === "id" || key === "type" || key === "scene" ? v : linkTerms(resolveRefs(v, chapters));
+    if (Array.isArray(v)) return v.map((x) => walk(x));
+    if (v && typeof v === "object" && Object.getPrototypeOf(v) === Object.prototype) {
+      const out = {};
+      for (const [k, x] of Object.entries(v)) out[k] = k === "spec" || typeof x === "function" ? x : walk(x, k);
+      return out;
+    }
+    return v;
+  };
+  return walk(block);
 }
 
 export function renderChapter(chapter, main, nav) {
@@ -90,6 +100,14 @@ export function renderChapter(chapter, main, nav) {
       else el.innerHTML = `<div class="note-head"><span class="note-icon">${kind.icon}</span>${b.title || kind.title}</div><div class="note-body">${b.html}</div>`;
     } else if (b.type === "quiz") {
       renderQuiz(el, b, updateCount);
+    } else if (b.type === "formula") {
+      renderFormula(el, b);
+    } else if (b.type === "problems") {
+      renderProblems(el, b, updateCount);
+    } else if (b.type === "bench") {
+      renderBench(el, b, updateCount);
+    } else if (b.type === "scene") {
+      cleanups.push(renderScene(el, b, { updateCount }));
     } else if (b.type === "custom") {
       el.className = b.wide === false ? "prose" : "custom-wrap wide";
       const done = b.render(el, { figures, updateCount });

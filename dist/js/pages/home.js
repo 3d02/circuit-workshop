@@ -35,7 +35,7 @@ export function home(main) {
         <h1>See electricity.<br><em>Then build with it.</em></h1>
         <p class="lede">Every circuit in this course is a live simulation. Colour shows voltage, moving dots show current, and everything reacts as you flip switches, cut wires, and occasionally set things on fire (for free). Then you take it to a real bench: building, measuring, soldering and fixing.</p>
         <div class="hero-actions">
-          <a class="btn" href="#${next.c.id}">${started ? `Continue: ${next.c.title}` : "Start with chapter 1"} →</a>
+          <a class="btn" href="#${next.c.id}">${started ? `Continue: ${next.c.title}` : "Start with the maths toolkit"} →</a>
           <a class="btn outline" href="#repair">Jump to the repair bench</a>
         </div>
       </div>
@@ -44,8 +44,8 @@ export function home(main) {
 
     <section class="home-pillars">
       <div><span class="pillar-icon">?</span><h3>Predict, then see</h3><p>Before most experiments you commit to a prediction. Then the circuit shows you what really happens, and why.</p></div>
-      <div><span class="pillar-icon">⚡</span><h3>Real physics underneath</h3><p>A circuit simulator solves every figure live: LEDs have real curves, capacitors charge, coils kick back.</p></div>
-      <div><span class="pillar-icon">✓</span><h3>Challenges that check themselves</h3><p>Hit a target current, pick the right resistor, find the fault. The course notices when you've done it.</p></div>
+      <div><span class="pillar-icon">⚡</span><h3>Real physics, written down</h3><p>A simulator solves every figure live, some of them in 3D. Every formula comes with where it's from, a worked example, and problems to do with a pencil.</p></div>
+      <div><span class="pillar-icon">✓</span><h3>Checked on screen and at your bench</h3><p>Hit a target current, type your worked answer, find the fault. Then do it for real with your own meter: every chapter has an exercise for it.</p></div>
     </section>
 
     <section class="course-map" aria-label="Course chapters">
