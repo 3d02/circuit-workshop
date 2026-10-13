@@ -101,7 +101,7 @@ export default {
       type: "note",
       kind: "build",
       title: "Your own meter",
-      html: `<p>Got a Brymen BM235? The <a href="#bm235">BM235 field guide</a> covers every dial position and button on the real thing, how each one works inside, and useful checks around the house.</p>`,
+      html: `<p>Got a Brymen BM235? The <a href="#bm235">BM235 field guide</a> covers every dial position and button on the real thing, with useful checks around the house, and the <a href="#bm235-guide">complete guide</a> goes through every function in depth.</p>`,
     },
     {
       type: "quiz",

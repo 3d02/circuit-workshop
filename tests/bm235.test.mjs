@@ -98,3 +98,20 @@ test("AutoV discharge: matches the manual's impedances, quick for small caps, sl
   assert.ok(Math.abs(dischargeTime(940e-6, 325) - 2 * bulk) < 1e-6, "time scales with capacitance");
   assert.equal(dischargeTime(470e-6, 5), 0);
 });
+
+test("the complete guide covers every dial position and button, and each function is fully written up", async () => {
+  const { GROUPS, SECTIONS } = await import("../dist/js/data/bm235-guide.js");
+  const groups = new Set(GROUPS.map((g) => g.id));
+  const ids = SECTIONS.map((s) => s.id);
+  assert.equal(new Set(ids).size, ids.length, "section ids are unique");
+  for (const s of SECTIONS) {
+    assert.ok(groups.has(s.group), `${s.id}: unknown group`);
+    if (s.setup) {
+      for (const k of ["specs", "how", "expected", "unexpected", "traps"]) assert.ok(s[k]?.length, `${s.id}: missing ${k}`);
+      assert.ok(!s.panel || ITEMS.some((x) => x.id === s.panel), `${s.id}: unknown panel ${s.panel}`);
+    } else assert.ok(s.html || s.table, `${s.id}: empty`);
+  }
+  // Every dial position and every button on the field guide's panel has its own section.
+  const panels = new Set(SECTIONS.map((s) => s.panel));
+  for (const x of ITEMS) assert.ok(panels.has(x.id), `no section for ${x.id}`);
+});

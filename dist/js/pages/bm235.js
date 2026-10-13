@@ -6,6 +6,7 @@ import { POSITIONS, FEATURES, ITEMS, JACKS, MUST, USES, ACCURACY, SOURCES, SHUNT
 import { CHAPTERS } from "../chapters/index.js";
 import { resolveRefs } from "../lesson.js";
 import { si } from "../format.js";
+import { PANEL_KEY } from "./bm235-guide.js";
 
 const refs = (html) => resolveRefs(html, CHAPTERS);
 const minus = (s) => String(s).replace(/-/g, "−");
@@ -113,6 +114,7 @@ export function bm235(main) {
       <div class="bm-facts">
         <span>6000 counts, 5 readings/s</span><span>True RMS</span><span>10 MΩ input · LoZ</span><span>CAT III 600 V · CAT IV 300 V</span><span>Ceramic HRC fuses</span><span>2 × AAA</span>
       </div>
+      <p class="bm-guide-link"><a class="btn small" href="#bm235-guide">The complete guide: every function in depth →</a></p>
       <nav class="bm-toc" aria-label="On this page">
         <button type="button" data-go="bm-must">Must-knows</button>
         <button type="button" data-go="bm-panel">Every mode</button>
@@ -306,6 +308,18 @@ export function bm235(main) {
   // In-page links can't use #fragments: the router owns the hash.
   main.querySelectorAll(".bm-toc button").forEach((b) => (b.onclick = () => main.querySelector(`#${b.dataset.go}`).scrollIntoView({ behavior: "smooth", block: "start" })));
   show("v");
+  // Arriving from the complete guide's "See it on the front panel" link.
+  let pending = null;
+  try {
+    pending = sessionStorage.getItem(PANEL_KEY);
+    sessionStorage.removeItem(PANEL_KEY);
+  } catch {
+    // No storage: start on V.
+  }
+  if (pending) {
+    show(pending);
+    requestAnimationFrame(() => $("#bm-panel").scrollIntoView({ block: "start" }));
+  }
 
   // ---- accuracy ----
   let pick = null;

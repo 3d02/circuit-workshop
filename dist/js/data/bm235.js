@@ -504,7 +504,7 @@ export const USES = [
       {
         title: "Fridge and freezer, overnight",
         modes: ["mv", "rec"],
-        html: `<p>Put the bead in the middle of the fridge (in a glass of water if you want food temperature rather than air swings), run the thin lead out through the door seal, choose °C and press <kbd>REC</kbd>. In the morning, step through MAX, MIN and AVG.</p>
+        html: `<p>Put the bead in the middle of the fridge (in a glass of water if you want food temperature rather than air swings), run the thin lead out through the door seal, choose °C and press <kbd>REC</kbd>. In the morning, step through to MAX and MIN. (AVG is only a rolling average of the last 16 readings, not the overnight mean.)</p>
           <p>A fridge should stay at or below 5 °C (3–5 °C is ideal), and a freezer at −18 °C or colder. Auto power-off is disabled while recording.</p>`,
       },
       {

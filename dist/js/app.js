@@ -6,6 +6,7 @@ import { home } from "./pages/home.js";
 import { atlas } from "./pages/atlas.js";
 import { tools } from "./pages/tools.js";
 import { bm235 } from "./pages/bm235.js";
+import { bm235Guide } from "./pages/bm235-guide.js";
 
 const main = document.getElementById("main");
 let cleanup = null;
@@ -72,6 +73,10 @@ function route() {
     cleanup = bm235(main);
     nav = "tools";
     title = "Brymen BM235 · Circuit Workshop";
+  } else if (hash === "bm235-guide") {
+    cleanup = bm235Guide(main);
+    nav = "tools";
+    title = "BM235 complete guide · Circuit Workshop";
   } else {
     cleanup = home(main);
   }
